@@ -1,8 +1,10 @@
+# receipt-scanner
+
 Receipt scanner extracts information from your PDF or image receipts.
 
 [![CircleCI](https://circleci.com/gh/danschultzer/receipt-scanner.svg?style=svg)](https://circleci.com/gh/danschultzer/receipt-scanner)
 
-# Example
+## Example
 
 ```
 import scanner from 'receipt-scanner';
@@ -14,11 +16,24 @@ scanner(stream_or_file_path)
   });
 ```
 
+### CLI
+
 ```
 receipt-scanner path/to/image.png
 ```
 
-# Getting started
+### Results
+
+```
+{
+    "path/to/image.png": {
+        "amount": "1,390.00",
+        "date": "2016-06-19"
+    }
+}
+```
+
+## Getting started
 
 `$ brew install poppler imagemagick tesseract --all-languages homebrew/science/vips`
 
@@ -32,7 +47,7 @@ Now run:
 
 `receipt-scanner path/to/image.png`
 
-## Command Line Interface
+### Command Line Interface
 
 ```
 $ receipt-scanner --help
@@ -48,9 +63,9 @@ Options:
   -v, --verbose          show verbose information
 ```
 
-# API
+## API
 
-## Custom image preprocessor
+### Custom image preprocessor
 
 You can use, and chain, specific image preprocessors by using the `imagePreprocessor` method like so:
 
@@ -83,7 +98,7 @@ scanner(stream_or_file_path)
   .imagePreprocessor(['opencv-photo2scan', { verbose: true, removeNoise: true }])
 ```
 
-## Custom text parser
+### Custom text parser
 
 You can add a custom text parser by using the `textParser` method like so:
 
@@ -111,7 +126,7 @@ scanner(stream_or_file_path)
 
 The value will be added to the response object for the `customTextParser` key.
 
-## Customizing amount or date parser
+### Customizing amount or date parser
 
 You can customize either parser by setting config like so:
 
@@ -128,13 +143,13 @@ scanner(stream_or_file_path)
 
 Date parser will by default find the [`earliest`](lib/text_parser/date/earliest.js) date, but as shown in the example you can also find the [`first`](lib/text_parser/date/first.js). The amount parser will find the total first, and if nothing is found, then find the biggest amount.
 
-### Date parser config options
+#### Date parser config options
 `parser`: What parser to run, `earliest` or `first`
 
-### Amount parser config options
+#### Amount parser config options
 `parsers`: What parsers to run in order. Default is `['total', 'largest']`.
 
-## Ticker
+### Ticker
 
 A ticker callback can be added with the `ticker` method.
 
@@ -151,7 +166,7 @@ scanner(stream_or_file_path)
   });
 ```
 
-## Parse text
+### Parse text
 
 If you've already extracted the text, and just want to parse it for the relevant information you can use `parseText`.
 
@@ -163,11 +178,11 @@ var results = scanner().parseText(text);
 
 It'll return the same results as when you use `parse(callback)`.
 
-# How is text parsed?
+## How is text parsed?
 
 Receipt scanner takes an ambiguous approach to date and amounts. Amounts formatting is guessed from the number of amounts found with comma or with dots for decimal separation.
 
-# What's the binaries for?
+## What's the binaries for?
 
 `poppler`: For pdftotext module and pdfimages binary (PDF processing)
 
@@ -181,13 +196,13 @@ Receipt scanner takes an ambiguous approach to date and amounts. Amounts formatt
 
 `tesseract --all-languages`: For node-tesseract module (OCR)
 
-# Tests
+## Tests
 
 `$ npm test`
 
 You can use `npm test watch` to keep tests running, and `npm run cover` for coverage.
 
-# LICENSE
+## LICENSE
 
 (The MIT License)
 
