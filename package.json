@@ -1,0 +1,43 @@
+{
+  "name": "receipt-scanner",
+  "version": "0.1.0",
+  "description": "Extracts information from your PDF or image receipts.",
+  "main": "main.js",
+  "author": "Dan Schultzer <dan@dreamconception.com>",
+  "maintainers": [
+    "Benjamin Schultzer <benjamin@schultzer.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/danschultzer/receipt-scanner.git"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec --recursive",
+    "test watch":  "./node_modules/.bin/mocha --reporter spec --recursive --watch",
+    "cover": "./node_modules/istanbul/lib/cli.js cover _mocha test/* --reporter --recursive",
+    "scan": "./cli.js -p -s",
+    "verbose": "./cli.js -p -s -v"
+  },
+  "bin": {
+    "receipt-scanner": "./cli.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "chrono-node": "^1.2.3",
+    "commander": "^2.9.0",
+    "gm": "^1.22.0",
+    "mime": "^1.3.4",
+    "node-tesseract": "^0.2.7",
+    "opencv": "5.0.0",
+    "pdf-text-extract": "^1.4.1",
+    "progress": "^1.1.8",
+    "sharp": "0.15.0",
+    "tmp": "0.0.28"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.5.3",
+    "nodemon": "^1.9.2"
+  }
+}
