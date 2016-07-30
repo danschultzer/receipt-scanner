@@ -18,6 +18,20 @@
     "scan": "./cli.js -p -s",
     "verbose": "./cli.js -p -s -v"
   },
+  "keywords": [
+    "computer vision",
+    "graphicsmagick",
+    "imagemagick",
+    "invoice",
+    "OCR",
+    "optical character recognition",
+    "opencv",
+    "preprocessing",
+    "receipt",
+    "scanner",
+    "sharp",
+    "tesseract"
+  ],
   "bin": {
     "receipt-scanner": "./cli.js"
   },
