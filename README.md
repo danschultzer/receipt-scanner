@@ -1,5 +1,7 @@
 Receipt scanner extracts information from your PDF or image receipts.
 
+[![CircleCI](https://circleci.com/gh/danschultzer/receipt-scanner.svg?style=svg)](https://circleci.com/gh/danschultzer/receipt-scanner)
+
 # Example
 
 ```
