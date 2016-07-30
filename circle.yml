@@ -1,8 +1,6 @@
 machine:
   node:
     version: 5.0.0
-  environment:
-    LD_LIBRARY_PATH: ~/receipt-scanner/node_modules/sharp/lib/
 
 dependencies:
   cache_directories:
