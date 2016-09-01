@@ -91,7 +91,7 @@ scanner(stream_or_file_path)
   });
 ```
 
-The default preprocessor used is [`opencv-photo2scan`](lib/image_processor/opencv-photo2scan.js). It's also possible to add configuration settings by pushing an array to `imagePreprocessor` like so:
+The default preprocessor used is [`opencv-photo2scan`](lib/image_processor/preprocessor/opencv-photo2scan.js). It's also possible to add configuration settings by pushing an array to `imagePreprocessor` like so:
 
 ```
 scanner(stream_or_file_path)
