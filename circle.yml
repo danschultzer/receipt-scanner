@@ -4,7 +4,7 @@ machine:
 
 dependencies:
   cache_directories:
-    - "~/opencv-3.1.0"
+    - ~/opencv-3.1.0
 
   pre:
     - sudo apt-get update

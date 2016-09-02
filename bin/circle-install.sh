@@ -8,7 +8,6 @@ if [ ! -d "opencv-3.1.0" ]; then
   unzip opencv-3.1.0.zip
 fi
 cd opencv-3.1.0
-sudo cp 3rdparty/ippicv/unpack/ippicv_lnx/lib/intel64/libippicv.a /usr/local/lib/
 if [ ! -d "build" ]; then
   mkdir build
 fi
@@ -16,5 +15,6 @@ cd build
 cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D WITH_V4L=ON -D WITH_QT=ON -D WITH_OPENGL=ON ..
 make -j $(nproc)
 sudo make install
+sudo ln -s /usr/local/share/OpenCV/3rdparty/lib/libippicv.a /usr/local/lib/
 sudo /bin/bash -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
 sudo ldconfig
