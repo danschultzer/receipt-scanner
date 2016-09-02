@@ -11,3 +11,9 @@ dependencies:
     - sudo apt-get install poppler-utils
     - sudo apt-get install tesseract-ocr
     - sh bin/circle-install.sh
+
+test:
+  override:
+    - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly test/* --reporter --recursive -- -R spec
+  post:
+    - bash <(curl -s https://codecov.io/bash)

@@ -13,7 +13,7 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec --recursive",
-    "test watch":  "./node_modules/.bin/mocha --reporter spec --recursive --watch",
+    "test watch": "./node_modules/.bin/mocha --reporter spec --recursive --watch",
     "cover": "./node_modules/istanbul/lib/cli.js cover _mocha test/* --reporter --recursive",
     "scan": "./cli.js -p -s",
     "verbose": "./cli.js -p -s -v"
