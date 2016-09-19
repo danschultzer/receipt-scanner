@@ -4,7 +4,7 @@
   "description": "Extracts information from your PDF or image receipts.",
   "main": "main.js",
   "author": "Dan Schultzer <dan@dreamconception.com>",
-  "maintainers": [
+  "contributors": [
     "Benjamin Schultzer <benjamin@schultzer.com>"
   ],
   "repository": {
