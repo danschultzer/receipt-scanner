@@ -39,9 +39,9 @@ receipt-scanner path/to/image.png
 
 `$ brew install poppler imagemagick tesseract --all-languages homebrew/science/vips`
 
-`$ brew install opencv3; brew link --force opencv3`
+`$ brew install webp opencv3; brew link --force opencv3`
 
-`$ ln -s /usr/local/Cellar/opencv3/3.1.0_3/share/OpenCV/3rdparty/lib/libippicv.a /usr/local/lib/` (to fix opencv 3 installation issues on 10.11)
+`$ ln -s /usr/local/Cellar/opencv3/3.1.0_4/share/OpenCV/3rdparty/lib/libippicv.a /usr/local/lib/` (to fix opencv 3 installation issues on 10.11)
 
 `$ npm install receipt-scanner -g`
 
