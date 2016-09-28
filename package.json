@@ -1,6 +1,6 @@
 {
   "name": "receipt-scanner",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Extracts information from your PDF or image receipts.",
   "main": "main.js",
   "author": "Dan Schultzer <dan@dreamconception.com>",
