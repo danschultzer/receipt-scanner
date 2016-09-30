@@ -38,7 +38,7 @@ receipt-scanner path/to/image.png
 
 ## Getting started
 
-`$ brew install poppler imagemagick tesseract --all-languages homebrew/science/vips`
+`$ brew install poppler tesseract --all-languages`
 
 `$ brew install webp opencv3; brew link --force opencv3`
 
@@ -65,6 +65,16 @@ Options:
   -s, --summary          show summary details
   -v, --verbose          show verbose information
 ```
+
+## Optional dependencies
+
+These dependencies are only necessary if you're going to use `sharp`, `imagemagick` or `graphicsmagick` image preprocessor.
+
+| Preprocessor   | Install command                        |
+| -------------- | -------------------------------------- |
+| Sharp          | `$ brew install homebrew/science/vips` |
+| Graphicsmagick | `$ brew install graphicsmagick`        |
+| Imagemagick    | `$ brew install imagemagick`           |
 
 ## API
 
