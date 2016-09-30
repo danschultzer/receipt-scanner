@@ -65,9 +65,15 @@ Options:
   -v, --verbose          show verbose information
 ```
 
-## Installation for custom image preprocessor
+## Optional dependencies
 
-`$ brew install imagemagick graphicsmagick homebrew/science/vips`
+These dependencies are only necessary if you're going to use `sharp`, `imagemagick` or `graphicsmagick` image preprocessor.
+
+| Preprocessor   | Install command                        |
+| -------------- | -------------------------------------- |
+| Sharp          | `$ brew install homebrew/science/vips` |
+| Graphicsmagick | `$ brew install graphicsmagick`        |
+| Imagemagick    | `$ brew install imagemagick`           |
 
 ## API
 
