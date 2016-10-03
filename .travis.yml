@@ -9,6 +9,7 @@ addons:
   apt:
     packages:
       # install dependencies
+      - graphicsmagick
       - imagemagick
       - poppler-utils
       - tesseract-ocr
@@ -16,4 +17,5 @@ addons:
 
 script:
   - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- "test/**/*_spec.js" --reporter spec --recursive
+  - istanbul cover ./benchmark/image_preprocessors.js --report lcovonly --config ./benchmark/.istanbul.yml
   - bash <(curl -s https://codecov.io/bash) -s coverage -f *.info
