@@ -106,7 +106,7 @@ function processData() {
       benchmark(imageProcessors, files).then(function (results) {
         log("\n============================== Benchmark summary ===============================");
         imageProcessors.forEach(function(imageProcessor) {
-          padding = String("                        ").slice(0, imageProcessors.sort(function (a, b) { return b.length - a.length; })[0].length - imageProcessor.length);
+          padding = String("                        ").slice(0, imageProcessors.slice(0).sort(function (a, b) { return b.length - a.length; })[0].length - imageProcessor.length);
           var success = results[imageProcessor].success,
             total = results[imageProcessor].total,
             rate = success / total,
