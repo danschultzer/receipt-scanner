@@ -2,3 +2,5 @@ node_modules
 .DS_Store
 Thumbs.db
 coverage
+benchmark/receipt-scanner-testdata-master*
+benchmark/github-commit-status.json

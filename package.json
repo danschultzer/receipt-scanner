@@ -16,7 +16,8 @@
     "test watch": "./node_modules/.bin/mocha --reporter spec --recursive --watch",
     "cover": "./node_modules/istanbul/lib/cli.js cover _mocha --recursive \"test/**/*_spec.js\" --reporter spec",
     "scan": "./cli.js -p -s",
-    "verbose": "./cli.js -p -s -v"
+    "verbose": "./cli.js -p -s -v",
+    "benchmark": "./benchmark/image_preprocessors.js"
   },
   "keywords": [
     "computer vision",
