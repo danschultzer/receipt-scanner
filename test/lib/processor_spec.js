@@ -161,6 +161,43 @@ describe('Processor', function() {
           });
       });
     });
+
+    describe("with chained image processors", function() {
+        this.timeout(30000);
+
+      it("uses chained image processors", function(done) {
+        var gm = require('gm'),
+          chain1Called = false;
+          chain2Called = false;
+
+        function customPreprocessor1(file_or_stream, outfile, cb) {
+          chain1Called = true;
+          gm(file_or_stream)
+           .resize(400, 200)
+           .write(outfile, function(error) {
+             cb(error, outfile);
+           });
+        }
+
+        function customPreprocessor2(file_or_stream, outfile, cb) {
+          chain2Called = true;
+          gm(file_or_stream)
+           .in('-level', '25%,75%')
+           .write(outfile, function(error) {
+             cb(error, outfile);
+           });
+        }
+
+        scanner(__dirname + "/../test_files/readable.jpg")
+          .imagePreprocessor(customPreprocessor1)
+          .imagePreprocessor(customPreprocessor2)
+          .parse(function(error, results) {
+            assert.isTrue(chain1Called);
+            assert.isTrue(chain2Called);
+            done();
+          });
+      });
+  });
   });
 
   describe('#textParser()', function() {
