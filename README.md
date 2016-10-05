@@ -2,7 +2,7 @@
 
 Receipt scanner extracts information from your PDF or image receipts.
 
-[![CircleCI](https://img.shields.io/circleci/project/danschultzer/receipt-scanner/master.svg)](https://circleci.com/gh/danschultzer/receipt-scanner)
+[![CircleCI](https://img.shields.io/travis/danschultzer/receipt-scanner/master.svg)](https://travis-ci.org/danschultzer/receipt-scanner/)
 [![NPM version](https://img.shields.io/npm/v/receipt-scanner.svg)](https://www.npmjs.com/package/receipt-scanner)
 [![Codecov](https://img.shields.io/codecov/c/github/danschultzer/receipt-scanner/master.svg)](https://codecov.io/gh/danschultzer/receipt-scanner)
 [![David](https://img.shields.io/david/danschultzer/receipt-scanner/master.svg)](https://david-dm.org/danschultzer/receipt-scanner)
