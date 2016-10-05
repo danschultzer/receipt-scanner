@@ -215,6 +215,10 @@ Receipt scanner takes an ambiguous approach to date and amounts. Amounts formatt
 
 You can use `npm test watch` to keep tests running, and `npm run cover` for coverage.
 
+## Benchmark
+
+Run `npm run benchmark` to get success rate using the [receipt-scanner-testdata](https://github.com/danschultzer/receipt-scanner-testdata) repository.
+
 ## LICENSE
 
 (The MIT License)
