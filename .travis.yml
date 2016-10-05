@@ -9,6 +9,7 @@ addons:
   apt:
     packages:
       # install dependencies
+      - graphicsmagick
       - imagemagick
       - poppler-utils
       - tesseract-ocr
