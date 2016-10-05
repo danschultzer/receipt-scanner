@@ -1,0 +1,19 @@
+sudo: required
+dist: trusty
+
+language: node_js
+node_js:
+  - "stable"
+
+addons:
+  apt:
+    packages:
+      # install dependencies
+      - imagemagick
+      - poppler-utils
+      - tesseract-ocr
+      - libopencv-dev
+
+script:
+  - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- "test/**/*_spec.js" --reporter spec --recursive
+  - bash <(curl -s https://codecov.io/bash) -s coverage -f *.info

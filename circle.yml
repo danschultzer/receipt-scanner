@@ -3,17 +3,10 @@ machine:
     version: 6.7.0
 
 dependencies:
-  cache_directories:
-    - ~/opencv-3.1.0
-
   pre:
     - sudo apt-get update
-    - sudo apt-get install poppler-utils
-    - sudo apt-get install tesseract-ocr
-    - sh bin/circle-install.sh
+    - sudo apt-get install imagemagick graphicsmagick poppler-utils tesseract-ocr libopencv-dev
 
 test:
   override:
-    - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly "test/**/*_spec.js" --reporter spec --recursive
-  post:
-    - bash <(curl -s https://codecov.io/bash)
+    - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- "test/**/*_spec.js" --reporter spec --recursive
