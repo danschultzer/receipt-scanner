@@ -3,3 +3,4 @@ node_modules
 Thumbs.db
 coverage
 benchmark/receipt-scanner-testdata-master*
+benchmark/github-commit-status.json

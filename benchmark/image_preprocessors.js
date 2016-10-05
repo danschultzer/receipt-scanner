@@ -111,9 +111,39 @@ function processData() {
             total = results[imageProcessor].total,
             rate = success / total,
             color = rate > 0.95 ? 'green' : rate > 0.85 ? 'yellow' : 'red';
-          log(chalk[color](imageProcessor + padding + ": " + (rate * 100).toFixed(2) + "% ( " + success + "/" + total + " )"));
+          log(chalk[color](imageProcessor + padding + ": " + (rate * 100).toFixed(1) + "% ( " + success + "/" + total + " )"));
         });
         log("=============================================================================\n");
+
+        var minRate = 0.85,
+          resultKeys = Object.keys(results),
+          resultValues = resultKeys.map(function (key) { return results[key]; }),
+          successRates = resultValues.map(function(value) {
+            return value.success / value.total;
+          }),
+          allSucceeded = successRates.every(function(rate) {
+            return rate >= minRate;
+          }),
+          avgRate = successRates.reduce(function(a, b) {
+            return a + b;
+          }) / successRates.length;
+          state = "success",
+          description = "Avg " + (avgRate * 100).toFixed(1) + '%';
+
+        if (!allSucceeded) {
+          state = "error";
+          description += ", failed " + successRates.filter(function(rate) {
+            return rate < minRate;
+          }).map(function(rate, index) {
+            return resultKeys[index] + " (" + (rate * 100).toFixed(1) + "%)";
+          }).join(", ");
+        }
+        fs.writeFileSync(benchmarkDir + "/github-commit-status.json", JSON.stringify({
+          state: state,
+          description: description.slice(0,140),
+          context: "benchmark/image_preprocessors.js",
+          target_url: "https://travis-ci.org/danschultzer/receipt-scanner/builds/" + process.env.TRAVIS_BUILD_ID
+        }));
       });
     });
   });
