@@ -36,6 +36,11 @@
   "bin": {
     "receipt-scanner": "./cli.js"
   },
+  "files":  [
+    "lib",
+    "cli.js",
+    "main.js"
+  ],
   "license": "MIT",
   "dependencies": {
     "chrono-node": "^1.2.4",
