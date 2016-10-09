@@ -10,11 +10,11 @@ describe('First', function() {
 
     describe('with first', function() {
       it('should get the first date', function() {
-        var text = "Date: 02/05/2016 Purchased: Feb/01/2016\nAnother date: Feb/07/2016";
+        var text = 'Date: 02/05/2016 Purchased: Feb/01/2016\nAnother date: Feb/07/2016';
         text = date_parser.prepareText(text);
         values = date_parser.allDates(text);
 
-        assert.equal(first.extract(values).toISOString().slice(0, 10), "2016-02-05");
+        assert.equal(first.extract(values).toISOString().slice(0, 10), '2016-02-05');
       });
     });
   });

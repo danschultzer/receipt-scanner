@@ -3,16 +3,16 @@ var chai = require('chai'),
 
 var scanner = require('../../../../lib/processor');
 
-describe("#imagemagick()", function(done) {
+describe('#imagemagick()', function(done) {
   this.timeout(30000);
 
-  it("should parse with imagemagick-prepare-ocr as preprocessor", function(done) {
-    scanner(__dirname + "/../../../test_files/readable.jpg")
+  it('should parse with imagemagick-prepare-ocr as preprocessor', function(done) {
+    scanner(__dirname + '/../../../test_files/readable.jpg')
       .imagePreprocessor('imagemagick-prepare-ocr')
       .parse(function(error, results) {
         assert.equal(error, null);
-        assert.equal(results.amount, "5,280.00");
-        assert.equal(results.date, "2015-08-04");
+        assert.equal(results.amount, '5,280.00');
+        assert.equal(results.date, '2015-08-04');
         done();
       });
   });

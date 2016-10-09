@@ -42,7 +42,7 @@ function benchmark(preprocessors, compareFiles) {
     var resultsObj = {};
     preprocessors.forEach(function(preprocessor, index) {
       success = results[index].filter(function(el) {
-        return JSON.stringify(el.results) == JSON.stringify(compareFiles[el.index].results);
+        return JSON.stringify(el.results) === JSON.stringify(compareFiles[el.index].results);
       });
       resultsObj[preprocessor] = {
         "results": results[index],
@@ -158,5 +158,4 @@ function processData() {
   });
 }
 
-return extractTestData().
-  then(processData);
+extractTestData().then(processData);

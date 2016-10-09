@@ -1,0 +1,12 @@
+engines:
+  eslint:
+    enabled: true
+    channel: "eslint-3"
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+# Exclude test
+exclude_paths:
+- "test/"

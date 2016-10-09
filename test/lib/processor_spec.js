@@ -12,11 +12,11 @@ describe('Processor', function() {
 
     describe('with pdf file', function() {
       it('should parse', function(done) {
-        scanner(__dirname + "/../test_files/readable.pdf")
+        scanner(__dirname + '/../test_files/readable.pdf')
           .parse(function(error, results) {
             assert.equal(error, null);
-            assert.equal(results.amount, "6000.00");
-            assert.equal(results.date, "2016-06-13");
+            assert.equal(results.amount, '6000.00');
+            assert.equal(results.date, '2016-06-13');
             done();
           });
       });
@@ -25,11 +25,11 @@ describe('Processor', function() {
     describe('with multi page pdf file', function() {
       this.timeout(30000);
       it('should parse', function(done) {
-        scanner(__dirname + "/../test_files/readableMultiPagePDF.pdf")
+        scanner(__dirname + '/../test_files/readableMultiPagePDF.pdf')
           .parse(function(error, results) {
             assert.equal(error, null);
-            assert.equal(results.amount, "6000.00");
-            assert.equal(results.date, "2016-06-13");
+            assert.equal(results.amount, '6000.00');
+            assert.equal(results.date, '2016-06-13');
             done();
           });
       });
@@ -38,11 +38,11 @@ describe('Processor', function() {
     describe('with pdf image file', function() {
       this.timeout(20000);
       it('should parse', function(done) {
-        scanner(__dirname + "/../test_files/readablePDFimage.pdf")
+        scanner(__dirname + '/../test_files/readablePDFimage.pdf')
           .parse(function(error, results) {
             assert.equal(error, null);
-            assert.equal(results.amount, "5,280.00");
-            assert.equal(results.date, "2015-08-04");
+            assert.equal(results.amount, '5,280.00');
+            assert.equal(results.date, '2015-08-04');
             done();
           });
       });
@@ -51,11 +51,11 @@ describe('Processor', function() {
     describe('with image file', function() {
       this.timeout(20000);
       it('should parse', function(done) {
-        scanner(__dirname + "/../test_files/readable.jpg")
+        scanner(__dirname + '/../test_files/readable.jpg')
           .parse(function(error, results) {
             assert.equal(error, null);
-            assert.equal(results.amount, "5,280.00");
-            assert.equal(results.date, "2015-08-04");
+            assert.equal(results.amount, '5,280.00');
+            assert.equal(results.date, '2015-08-04');
             done();
           });
       });
@@ -63,7 +63,7 @@ describe('Processor', function() {
 
     describe('with empty image file', function() {
       it('should parse', function(done) {
-        scanner(__dirname + "/../test_files/empty.jpg")
+        scanner(__dirname + '/../test_files/empty.jpg')
           .parse(function(error, results) {
             assert.equal(error, null);
             assert.equal(results.amount, false);
@@ -75,7 +75,7 @@ describe('Processor', function() {
 
     describe('with image file containing alpha channel', function() {
       it('should parse', function(done) {
-        scanner(__dirname + "/../test_files/alpha.png")
+        scanner(__dirname + '/../test_files/alpha.png')
           .parse(function(error, results) {
             assert.equal(error, null);
             assert.equal(results.amount, false);
@@ -87,9 +87,9 @@ describe('Processor', function() {
 
     describe('with invalid file', function() {
       it('should return error', function(done) {
-        scanner("../test_files/readable.txt")
+        scanner('../test_files/readable.txt')
           .parse(function(error) {
-            assert.equal(error.message, "Unsupported format: text/plain");
+            assert.equal(error.message, 'Unsupported format: text/plain');
             done();
           });
       });
@@ -108,35 +108,35 @@ describe('Processor', function() {
 
   describe('#parseText()', function() {
     it('should parse input text to JSON', function() {
-      var results = scanner().parseText("text total 6,000.00 date 2016-08-13");
-      assert.equal(results.amount, "6,000.00");
-      assert.equal(results.date, "2016-08-13");
+      var results = scanner().parseText('text total 6,000.00 date 2016-08-13');
+      assert.equal(results.amount, '6,000.00');
+      assert.equal(results.date, '2016-08-13');
     });
   });
 
   describe('#setVerbose()', function() {
-    it("shows verbose information", function() {
-      var results = scanner().setVerbose(false).parseText("text total 6,000.00 date 2016-08-13");
+    it('shows verbose information', function() {
+      var results = scanner().setVerbose(false).parseText('text total 6,000.00 date 2016-08-13');
       assert.isUndefined(results.verbose);
 
-      results = scanner().setVerbose(true).parseText("text total 6,000.00 date 2016-08-13");
+      results = scanner().setVerbose(true).parseText('text total 6,000.00 date 2016-08-13');
       assert.isDefined(results.verbose);
     });
   });
 
   describe('#ticker()', function() {
-    it("does callback to ticker", function(done) {
+    it('does callback to ticker', function(done) {
       var tickerCallback = function(percent) {
         assert.isNumber(percent);
         done();
       };
-      var results = scanner().ticker(tickerCallback).parseText("text total 6,000.00 date 2016-08-13");
+      var results = scanner().ticker(tickerCallback).parseText('text total 6,000.00 date 2016-08-13');
     });
   });
 
   describe('#imagePreprocessor()', function(done) {
-    describe("with custom image processor", function() {
-      it("uses custom image processor", function(done) {
+    describe('with custom image processor', function() {
+      it('uses custom image processor', function(done) {
         var gm = require('gm'),
           gmCalled = false;
 
@@ -150,7 +150,7 @@ describe('Processor', function() {
            });
         }
 
-        scanner(__dirname + "/../test_files/readable.jpg")
+        scanner(__dirname + '/../test_files/readable.jpg')
           .imagePreprocessor(customPreprocessor)
           .parse(function(error, results) {
             assert.isTrue(gmCalled);
@@ -159,25 +159,25 @@ describe('Processor', function() {
       });
     });
 
-    describe("with existing image processor", function() {
+    describe('with existing image processor', function() {
       this.timeout(30000);
 
-      it("uses existing image processor", function(done) {
-        scanner(__dirname + "/../test_files/readable.jpg")
+      it('uses existing image processor', function(done) {
+        scanner(__dirname + '/../test_files/readable.jpg')
           .imagePreprocessor('sharp')
           .parse(function(error, results) {
             assert.equal(error, null);
-            assert.equal(results.amount, "5,280.00");
-            assert.equal(results.date, "2015-08-04");
+            assert.equal(results.amount, '5,280.00');
+            assert.equal(results.date, '2015-08-04');
             done();
           });
       });
     });
 
-    describe("with chained image processors", function() {
+    describe('with chained image processors', function() {
         this.timeout(30000);
 
-      it("uses chained image processors", function(done) {
+      it('uses chained image processors', function(done) {
         var gm = require('gm'),
           chain1Called = false;
           chain2Called = false;
@@ -200,7 +200,7 @@ describe('Processor', function() {
            });
         }
 
-        scanner(__dirname + "/../test_files/readable.jpg")
+        scanner(__dirname + '/../test_files/readable.jpg')
           .imagePreprocessor(customPreprocessor1)
           .imagePreprocessor(customPreprocessor2)
           .parse(function(error, results) {
@@ -211,8 +211,8 @@ describe('Processor', function() {
       });
     });
 
-    describe("when preprocessor fails", function() {
-      var error = new Error("Test");
+    describe('when preprocessor fails', function() {
+      var error = new Error('Test');
 
       beforeEach(function() {
         sinon.stub(preprocessor.prototype, 'process', function(file_or_stream, outfile, callback) {
@@ -225,7 +225,7 @@ describe('Processor', function() {
       });
 
       it('should return error', function(done) {
-        scanner(__dirname + "/../test_files/readable.jpg")
+        scanner(__dirname + '/../test_files/readable.jpg')
         .parse(function(err, results) {
           assert.equal(error, err);
           done();
@@ -233,8 +233,8 @@ describe('Processor', function() {
       });
     });
 
-    describe("when tesseract returns error", function() {
-      var error = new Error("Test");
+    describe('when tesseract returns error', function() {
+      var error = new Error('Test');
 
       beforeEach(function() {
         sinon.stub(tesseract, 'process', function(file, callback) {
@@ -247,7 +247,7 @@ describe('Processor', function() {
       });
 
       it('should return error', function(done) {
-        scanner(__dirname + "/../test_files/readable.jpg")
+        scanner(__dirname + '/../test_files/readable.jpg')
         .parse(function(err, results) {
           assert.equal(error, err);
           done();
@@ -257,8 +257,8 @@ describe('Processor', function() {
   });
 
   describe('#textParser()', function() {
-    describe("with custom text parser with config", function() {
-      it("uses custom text parser with config", function() {
+    describe('with custom text parser with config', function() {
+      it('uses custom text parser with config', function() {
         function customTextParser(text, config) {
           assert.equal("Test", config.option1);
           var regexp = new RegExp('Description: (.*)', 'ig'),
@@ -273,8 +273,8 @@ describe('Processor', function() {
 
         var results = scanner()
           .textParser([customTextParser, { option1: 'Test' }])
-          .parseText("Description: Test Description\ntotal 6,000.00 date 2016-08-13");
-        assert.equal(results.customTextParser, "Test Description");
+          .parseText('Description: Test Description\ntotal 6,000.00 date 2016-08-13');
+        assert.equal(results.customTextParser, 'Test Description');
       });
     });
   });

@@ -6,7 +6,7 @@ var program = require('commander'),
   scanner = require('./main');
 
 function action(paths, options) {
-  var format = options.format || "json",
+  var format = options.format || 'json',
     hideProgressBar = !options.progress,
     verbose = options.verbose,
     summary = options.summary,
@@ -34,7 +34,7 @@ function action(paths, options) {
         fs.accessSync(element, fs.F_OK);
         return true;
     } catch (e) {
-      console.log("Warning: File or directory \"" + element + "\" does not exist.");
+      console.log('Warning: File or directory \'' + element + '\' does not exist.');
     }
   });
 
@@ -49,8 +49,7 @@ function action(paths, options) {
   }
 
   if (files.length === 0) {
-    console.error('No files were found.');
-    process.exit(1);
+    throw new Error('No files were found.');
   }
 
   files = files.filter(function(element, index, array) {
@@ -58,12 +57,11 @@ function action(paths, options) {
   });
 
   if (files.length === 0) {
-    console.error('No image or PDF files could be found.');
-    process.exit(1);
+    throw new Error('No image or PDF files could be found.');
   }
 
   var stderr = process.stderr,
-    bar = new progress("Parsing :current/:total |:bar| :elapseds", {
+    bar = new progress('Parsing :current/:total |:bar| :elapseds', {
     complete: '\u2591',
     incomplete: ' ',
     width: 35,
@@ -72,17 +70,21 @@ function action(paths, options) {
     stream: hideProgressBar ? function() {} : stderr
   });
 
-  var interval = setInterval(function() {
+  function updateBar() {
     bar.update(percentages.reduce(function(a, b) {
       return a + b;
     }, 0) / files.length);
+  }
+
+  var interval = setInterval(function() {
+    updateBar();
 
     if (bar.complete) clearInterval(interval);
   }, 300);
 
   var filesDone = [];
 
-  for (i = 0; i < files.length; i++) {
+  for (let i = 0; i < files.length; i++) {
     var file = files[i],
       filename = file,
       stream = fs.createReadStream(file);
@@ -102,16 +104,14 @@ function action(paths, options) {
         })
         .ticker(function(percent) {
           percentages[index] = percent;
-          bar.update(percentages.reduce(function(a, b) {
-            return a + b;
-          }, 0) / files.length);
+          updateBar();
         })
         .parse(function(error, details) {
           filesDone[index] = true;
 
           if (error) {
             response[filename] = {
-              "error": error.message || error
+              'error': error.message || error
             };
           } else {
             if (!verbose) delete details.verboseText;
@@ -121,7 +121,7 @@ function action(paths, options) {
           if (filesDone.every(function(element) {
               return element;
             })) {
-            if (format == "json") {
+            if (format === 'json') {
               console.log(JSON.stringify(sortResponse(response), null, 4));
             } else {
               console.log(response);
@@ -129,18 +129,18 @@ function action(paths, options) {
 
             if (summary) {
               statisticsObject = statistics(response);
-              console.log("\n---------\nI was able to parse " +
+              console.log('\n---------\nI was able to parse ' +
                 (statisticsObject.total / files.length * 100).toFixed(1) +
-                '% (' + statisticsObject.total + ') of the ' + files.length + " file(s) in " + ((new Date() - startTime) / 1000).toFixed(1) + "s.\n" +
+                '% (' + statisticsObject.total + ') of the ' + files.length + ' file(s) in ' + ((new Date() - startTime) / 1000).toFixed(1) + 's.\n' +
                 (statisticsObject.amount / files.length * 100).toFixed(1) +
                 '% (' + statisticsObject.amount + ') amounts and ' +
                 (statisticsObject.date / files.length * 100).toFixed(1) +
-                '% (' + statisticsObject.date + ") dates could be parsed.\n---------\n");
+                '% (' + statisticsObject.date + ') dates could be parsed.\n---------\n');
             }
           }
         });
 
-    })(filename, i);
+    }(filename, i));
   }
 }
 
@@ -163,7 +163,7 @@ function sortResponse(response) {
 function naturalSort(ar, index) {
   var L = ar.length,
     i, who, next,
-    isi = typeof index == 'number',
+    isi = typeof index === 'number',
     rx = /(\.\d+)|(\d+(\.\d+)?)|([^\d.]+)|(\.(\D+|$))/g;
 
   function nSort(aa, bb) {
@@ -199,16 +199,18 @@ function statistics(objects) {
     countAmount = 0,
     countDate = 0;
   for (var key in objects) {
-    var object = objects[key];
-    if (!object.error) {
-      if (object.amount && object.date) {
-        ++countTotal;
-      }
-      if (object.date) {
-        ++countDate;
-      }
-      if (object.amount) {
-        ++countAmount;
+    if ({}.hasOwnProperty.call(key, objects)){
+      var object = objects[key];
+      if (!object.error) {
+        if (object.amount && object.date) {
+          ++countTotal;
+        }
+        if (object.date) {
+          ++countDate;
+        }
+        if (object.amount) {
+          ++countAmount;
+        }
       }
     }
   }
@@ -222,9 +224,9 @@ function statistics(objects) {
 
 program
   .arguments('<path...>')
-  .option("-f, --format <format>", "format to return, json (default) or text")
-  .option("-p, --progress", "add a progress bar")
-  .option("-s, --summary", "show summary details")
-  .option("-v, --verbose", "show verbose information")
+  .option('-f, --format <format>', 'format to return, json (default) or text')
+  .option('-p, --progress', 'add a progress bar')
+  .option('-s, --summary', 'show summary details')
+  .option('-v, --verbose', 'show verbose information')
   .action(action)
   .parse(process.argv);
