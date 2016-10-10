@@ -11,22 +11,31 @@ function benchmark(preprocessors, compareFiles) {
   var promises = [];
   preprocessors.forEach(function(preprocessor) {
     log("Running testdata for " + chalk.underline(preprocessor));
-    var preprocessorPromises = [];
-    compareFiles.forEach(function (file, index) {
-      var promise = new Promise(function(resolve, reject) {
-        var run = scanner(benchmarkDir + "/receipt-scanner-testdata-master/" + file.path)
-          .imagePreprocessor(preprocessor)
-          .parse(function(error, results) {
-            if (error) {
-              reject();
-              throw error;
-            }
-            resolve({ "index": index, "file": file.path, "results": results});
-          });
+
+    var p = Promise.resolve([]);
+
+    compareFiles.forEach(function(file, index){
+      p = p.then(function(list) {
+        return new Promise(function(resolve, reject) {
+          var run = scanner(benchmarkDir + "/receipt-scanner-testdata-master/" + file.path)
+            .imagePreprocessor(preprocessor)
+            .parse(function(error, results) {
+              if (error) {
+                reject();
+                throw error;
+              }
+              list.push({
+                "index": index,
+                "file": file.path,
+                "results": results
+              });
+              resolve(list);
+            });
+        });
       });
-      preprocessorPromises.push(promise);
     });
-    promises.push(Promise.all(preprocessorPromises));
+
+    promises.push(p);
   });
 
   return Promise.all(promises).then(function (results) {
