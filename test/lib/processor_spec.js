@@ -92,6 +92,15 @@ describe('Processor', function() {
       });
     });
 
+    describe('with no file', function() {
+      it('should return error', function(done) {
+        scanner()
+          .parse(function(error) {
+            assert.equal(error.message, "Unsupported format: application/octet-stream");
+            done();
+          });
+      });
+    });
   });
 
   describe('#parseText()', function() {
@@ -201,9 +210,10 @@ describe('Processor', function() {
   });
 
   describe('#textParser()', function() {
-    describe("with custom text parser", function() {
-      it("uses custom text parser", function() {
-        function customTextParser(text) {
+    describe("with custom text parser with config", function() {
+      it("uses custom text parser with config", function() {
+        function customTextParser(text, config) {
+          assert.equal("Test", config.option1);
           var regexp = new RegExp('Description: (.*)', 'ig'),
             matches, output = [], results = {};
           while (matches = regexp.exec(text)) {
@@ -215,7 +225,7 @@ describe('Processor', function() {
         }
 
         var results = scanner()
-          .textParser(customTextParser)
+          .textParser([customTextParser, { option1: 'Test' }])
           .parseText("Description: Test Description\ntotal 6,000.00 date 2016-08-13");
         assert.equal(results.customTextParser, "Test Description");
       });
