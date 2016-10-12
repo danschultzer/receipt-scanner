@@ -1,7 +1,10 @@
 var chai = require('chai'),
   assert = chai.assert;
+var sinon = require('sinon');
+var tesseract = require('node-tesseract');
 
 var scanner = require('../../lib/processor');
+var preprocessor = require('../../lib/image_processor/preprocessor');
 
 describe('Processor', function() {
 
@@ -206,7 +209,51 @@ describe('Processor', function() {
             done();
           });
       });
-  });
+    });
+
+    describe("when preprocessor fails", function() {
+      var error = new Error("Test");
+
+      beforeEach(function() {
+        sinon.stub(preprocessor.prototype, 'process', function(file_or_stream, outfile, callback) {
+          callback(error);
+        });
+      });
+
+      afterEach(function() {
+        preprocessor.prototype.process.restore();
+      });
+
+      it('should return error', function(done) {
+        scanner(__dirname + "/../test_files/readable.jpg")
+        .parse(function(err, results) {
+          assert.equal(error, err);
+          done();
+        });
+      });
+    });
+
+    describe("when tesseract returns error", function() {
+      var error = new Error("Test");
+
+      beforeEach(function() {
+        sinon.stub(tesseract, 'process', function(file, callback) {
+          callback(error);
+        });
+      });
+
+      afterEach(function() {
+        tesseract.process.restore();
+      });
+
+      it('should return error', function(done) {
+        scanner(__dirname + "/../test_files/readable.jpg")
+        .parse(function(err, results) {
+          assert.equal(error, err);
+          done();
+        });
+      });
+    });
   });
 
   describe('#textParser()', function() {
