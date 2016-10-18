@@ -34,7 +34,7 @@ function action(paths, options) {
         fs.accessSync(element, fs.F_OK);
         return true;
     } catch (e) {
-      console.log('Warning: File or directory \'' + element + '\' does not exist.');
+      console.log('Warning: File or directory "' + element + '" does not exist.');
     }
   });
 
@@ -48,9 +48,8 @@ function action(paths, options) {
     }
   }
 
-  if (files.length === 0) {
+  if (files.length === 0)
     throw new Error('No files were found.');
-  }
 
   files = files.filter(function(element, index, array) {
     return (['pdf', 'jpeg', 'jpg', 'gif', 'png', 'bmp'].indexOf(element.split('.').pop().toLowerCase()) !== -1);
@@ -70,21 +69,22 @@ function action(paths, options) {
     stream: hideProgressBar ? function() {} : stderr
   });
 
-  function updateBar() {
+  function updateProgressBar() {
     bar.update(percentages.reduce(function(a, b) {
       return a + b;
     }, 0) / files.length);
   }
 
   var interval = setInterval(function() {
-    updateBar();
+    updateProgressBar();
 
-    if (bar.complete) clearInterval(interval);
+    if (bar.complete)
+      clearInterval(interval);
   }, 300);
 
   var filesDone = [];
 
-  for (let i = 0; i < files.length; i++) {
+  for (var j = 0; j < files.length; j++) {
     var file = files[i],
       filename = file,
       stream = fs.createReadStream(file);
@@ -99,12 +99,12 @@ function action(paths, options) {
           stderr.clearLine();
           stderr.cursorTo(0);
           stderr.write(message);
-          stderr.write("\n");
+          stderr.write('\n');
           bar.render();
         })
         .ticker(function(percent) {
           percentages[index] = percent;
-          updateBar();
+          updateProgressBar();
         })
         .parse(function(error, details) {
           filesDone[index] = true;
@@ -172,12 +172,14 @@ function naturalSort(ar, index) {
       a1, b1, i = 0,
       n, L = a.length;
     while (i < L) {
-      if (!b[i]) return 1;
+      if (!b[i])
+        return 1;
       a1 = a[i];
       b1 = b[i++];
       if (a1 !== b1) {
         n = a1 - b1;
-        if (!isNaN(n)) return n;
+        if (!isNaN(n))
+          return n;
         return a1 > b1 ? 1 : -1;
       }
     }
@@ -199,18 +201,16 @@ function statistics(objects) {
     countAmount = 0,
     countDate = 0;
   for (var key in objects) {
-    if ({}.hasOwnProperty.call(key, objects)){
-      var object = objects[key];
-      if (!object.error) {
-        if (object.amount && object.date) {
-          ++countTotal;
-        }
-        if (object.date) {
-          ++countDate;
-        }
-        if (object.amount) {
-          ++countAmount;
-        }
+    var object = objects[key];
+    if (!object.error) {
+      if (object.amount && object.date) {
+        ++countTotal;
+      }
+      if (object.date) {
+        ++countDate;
+      }
+      if (object.amount) {
+        ++countAmount;
       }
     }
   }
