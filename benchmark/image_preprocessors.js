@@ -112,7 +112,7 @@ function processData() {
     fs.readFile(benchmarkDir + '/receipt-scanner-testdata-master/data.json', 'utf8', function (error, data) {
       if (error)
         throw error;
-        
+
       files = JSON.parse(data).data;
       benchmark(imageProcessors, files).then(function (results) {
         log('\n============================== Benchmark summary ===============================');
@@ -139,7 +139,7 @@ function processData() {
           }),
           avgRate = successRates.reduce(function(a, b) {
             return a + b;
-          }) / successRates.length;
+          }) / successRates.length,
           state = 'success',
           description = 'Avg ' + (avgRate * 100).toFixed(1) + '%';
 
