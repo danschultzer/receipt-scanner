@@ -48,6 +48,16 @@ describe('Processor', function() {
       });
     });
 
+    describe('with empty pdf file', function() {
+      it('should return error', function(done) {
+        scanner(__dirname + '/../test_files/empty.pdf')
+          .parse(function(error) {
+            assert.equal(error.message, 'No images found in PDF');
+            done();
+          });
+      });
+    });
+
     describe('with image file', function() {
       this.timeout(20000);
       it('should parse', function(done) {
@@ -161,7 +171,6 @@ describe('Processor', function() {
 
     describe('with existing image processor', function() {
       this.timeout(30000);
-
       it('uses existing image processor', function(done) {
         scanner(__dirname + '/../test_files/readable.jpg')
           .imagePreprocessor('sharp')
@@ -175,8 +184,7 @@ describe('Processor', function() {
     });
 
     describe('with chained image processors', function() {
-        this.timeout(30000);
-
+      this.timeout(30000);
       it('uses chained image processors', function(done) {
         var gm = require('gm'),
           chain1Called = false;
@@ -224,8 +232,9 @@ describe('Processor', function() {
         preprocessor.prototype.process.restore();
       });
 
+      this.timeout(30000);
       it('should return error', function(done) {
-        scanner(__dirname + '/../test_files/readable.jpg')
+        scanner(__dirname + '/../test_files/readablePDFimage.pdf')
         .parse(function(err, results) {
           assert.equal(error, err);
           done();
