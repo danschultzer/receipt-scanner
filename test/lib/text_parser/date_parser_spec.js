@@ -97,9 +97,28 @@ describe('DateParser', function() {
       assert.equal(extract_value(date_parser.allDates('Friday 30-12-16')), '2016-12-30');
     });
 
+    it('should handle EN dayname, mm-dd-yy,/dd-mm-yy,', function() {
+      assert.equal(extract_value(date_parser.allDates('12-30-16,')), '2016-12-30');
+      assert.equal(extract_value(date_parser.allDates('30-12-16,')), '2016-12-30');
+      assert.equal(extract_value(date_parser.allDates('Friday, 12-30-16,')), '2016-12-30');
+      assert.equal(extract_value(date_parser.allDates('Friday, 30-12-16,')), '2016-12-30');
+    });
+
     it('should handle ES dayname dd-mm-yy', function() {
       assert.equal(extract_value(date_parser.allDates('Viernes 30-12-16')), '2016-12-30');
       assert.equal(extract_value(date_parser.allDates('30-12-16')), '2016-12-30');
+    });
+
+    it('should handle ES dayname, dd-mm-yy,', function() {
+      assert.equal(extract_value(date_parser.allDates('Viernes, 30-12-16,')), '2016-12-30');
+      assert.equal(extract_value(date_parser.allDates('30-12-16,')), '2016-12-30');
+    });
+
+    it('should handle mm.dd.yy/dd.mm.yy', function() {
+      assert.equal(extract_value(date_parser.allDates('12.30.16')), '2016-12-30');
+      assert.equal(extract_value(date_parser.allDates('30.12.16')), '2016-12-30');
+      assert.equal(extract_value(date_parser.allDates('12.30.2016')), '2016-12-30');
+      assert.equal(extract_value(date_parser.allDates('30.12.2016')), '2016-12-30');
     });
 
     it('should return false if no dates', function() {
