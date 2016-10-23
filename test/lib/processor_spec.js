@@ -97,7 +97,7 @@ describe('Processor', function() {
 
     describe('with invalid file', function() {
       it('should return error', function(done) {
-        scanner('../test_files/readable.txt')
+        scanner(__dirname + '/../test_files/readable.txt')
           .parse(function(error) {
             assert.equal(error.message, 'Unsupported format: text/plain');
             done();
