@@ -8,7 +8,7 @@ describe('#opencv()', function(done) {
 
   it('should parse with onlyFindTextInsidePaperContour', function(done) {
     scanner(__dirname + '/../../../test_files/readableRotatedGrayscale.png')
-      .imagePreprocessor(['opencv-photo2scan', {
+      .imagePreprocessor(['opencv', {
         onlyFindTextInsidePaperContour: true,
       }])
       .parse(function(error, results) {
@@ -21,7 +21,7 @@ describe('#opencv()', function(done) {
 
   it('should parse with removeNoise', function(done) {
     scanner(__dirname + '/../../../test_files/readableRotatedColor.png')
-      .imagePreprocessor(['opencv-photo2scan', {
+      .imagePreprocessor(['opencv', {
         removeNoise: true,
       }])
       .parse(function(error, results) {
