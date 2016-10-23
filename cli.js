@@ -84,7 +84,7 @@ function action(paths, options) {
 
   var filesDone = [];
 
-  for (var j = 0; j < files.length; j++) {
+  for (i = 0; i < files.length; i++) {
     var file = files[i],
       filename = file,
       stream = fs.createReadStream(file);
