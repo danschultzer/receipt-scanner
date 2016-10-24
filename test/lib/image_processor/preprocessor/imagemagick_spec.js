@@ -8,7 +8,7 @@ describe('#imagemagick()', function(done) {
 
   it('should parse with imagemagick-prepare-ocr as preprocessor', function(done) {
     scanner(__dirname + '/../../../test_files/readable.jpg')
-      .imagePreprocessor('imagemagick-prepare-ocr')
+      .imagePreprocessor('imagemagick')
       .parse(function(error, results) {
         assert.equal(error, null);
         assert.equal(results.amount, '5,280.00');

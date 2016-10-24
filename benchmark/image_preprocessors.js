@@ -105,8 +105,8 @@ function processData() {
     var imageProcessors = [
       'graphicsmagick',
       'sharp',
-      'opencv-photo2scan',
-      'imagemagick-prepare-ocr'
+      'opencv',
+      'imagemagick'
     ];
 
     fs.readFile(benchmarkDir + '/receipt-scanner-testdata-master/data.json', 'utf8', function (error, data) {
