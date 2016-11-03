@@ -38,7 +38,7 @@ function benchmark(preprocessors, compareFiles) {
     promises.push(p);
   });
 
-  return Promise.all(promises).then(function (results) {
+  return Promise.all(promises).then(function(results) {
     var resultsObj = {};
     preprocessors.forEach(function(preprocessor, index) {
       success = results[index].filter(function(el) {
@@ -109,12 +109,12 @@ function processData() {
       'imagemagick'
     ];
 
-    fs.readFile(benchmarkDir + '/receipt-scanner-testdata-master/data.json', 'utf8', function (error, data) {
+    fs.readFile(benchmarkDir + '/receipt-scanner-testdata-master/data.json', 'utf8', function(error, data) {
       if (error)
         throw error;
 
       files = JSON.parse(data).data;
-      benchmark(imageProcessors, files).then(function (results) {
+      benchmark(imageProcessors, files).then(function(results) {
         log('\n============================== Benchmark summary ===============================');
         imageProcessors.forEach(function(imageProcessor) {
           padding = String('                        ').slice(0, imageProcessors.slice(0).sort(function (a, b) { return b.length - a.length; })[0].length - imageProcessor.length);
@@ -128,7 +128,7 @@ function processData() {
 
         var minRate = 0.85,
           resultKeys = Object.keys(results),
-          resultValues = resultKeys.map(function (key) {
+          resultValues = resultKeys.map(function(key) {
             return results[key];
           }),
           successRates = resultValues.map(function(value) {
