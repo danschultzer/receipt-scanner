@@ -72,7 +72,7 @@ These dependencies are only necessary if you're going to use `sharp`, `imagemagi
 
 | Preprocessor   | Install command                        |
 | -------------- | -------------------------------------- |
-| Sharp          | `$ brew install homebrew/science/vips` |
+| Sharp          | `$ brew install vips`                  |
 | Graphicsmagick | `$ brew install graphicsmagick`        |
 | Imagemagick    | `$ brew install imagemagick`           |
 
@@ -108,7 +108,7 @@ The default preprocessor used is [`opencv`](lib/image_processor/preprocessor/ope
 
 ```
 scanner(stream_or_file_path)
-  .imagePreprocessor(['opencv', { verbose: true, removeNoise: true }])
+  .imagePreprocessor(['opencv', { verbose: true }])
 ```
 
 ### Custom text parser
@@ -205,7 +205,7 @@ Receipt scanner takes an ambiguous approach to date and amounts. Amounts formatt
 
 `opencv3`: For node-opencv (image preprocessing)
 
-`homebrew/science/vips`: For sharp module (image preprocessing)
+`vips`: For sharp module (image preprocessing)
 
 `tesseract --all-languages`: For node-tesseract module (OCR)
 
