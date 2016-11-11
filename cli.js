@@ -162,31 +162,25 @@ function sortResponse (response) {
 // http://stackoverflow.com/a/2802804
 function naturalSort (ar, index) {
   var L = ar.length
-  var i = typeof index === 'number'
-  var who = typeof index === 'number'
-  var next = typeof index === 'number'
+  var i, who, next
   var isi = typeof index === 'number'
   var rx = /(\.\d+)|(\d+(\.\d+)?)|([^\d.]+)|(\.(\D+|$))/g
 
   function nSort (aa, bb) {
     var a = aa[0]
     var b = bb[0]
-    var a1 = 0
-    var b1 = 0
+    var a1, b1, n
     var i = 0
-    var n = a.length
     var L = a.length
     while (i < L) {
-      if (!b[i]) {
-        return 1
-      }
+      if (!b[i]) return 1
       a1 = a[i]
       b1 = b[i++]
+
       if (a1 !== b1) {
         n = a1 - b1
-        if (!isNaN(n)) {
-          return n
-        }
+        if (!isNaN(n)) return n
+
         return a1 > b1 ? 1 : -1
       }
     }
@@ -207,6 +201,7 @@ function statistics (objects) {
   var countTotal = 0
   var countAmount = 0
   var countDate = 0
+
   for (var key in objects) {
     var object = objects[key]
     if (!object.error) {
@@ -221,7 +216,7 @@ function statistics (objects) {
       }
     }
   }
-  Object.keys(objects).length
+
   return {
     total: countTotal,
     amount: countAmount,
