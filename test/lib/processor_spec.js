@@ -12,7 +12,7 @@ describe('Processor', function () {
   describe('#parse()', function () {
     describe('with pdf file', function () {
       it('should parse', function (done) {
-        scanner(path.join(__dirname, '/../test_files/readable.pdf'))
+        scanner(path.join(__dirname, '..', 'test_files', 'readable.pdf'))
           .parse(function (error, results) {
             assert.equal(error, null)
             assert.equal(results.amount, '6000.00')
@@ -25,7 +25,7 @@ describe('Processor', function () {
     describe('with multi page pdf file', function () {
       this.timeout(30000)
       it('should parse', function (done) {
-        scanner(path.join(__dirname, '/../test_files/readableMultiPagePDF.pdf'))
+        scanner(path.join(__dirname, '..', 'test_files', 'readableMultiPagePDF.pdf'))
           .parse(function (error, results) {
             assert.equal(error, null)
             assert.equal(results.amount, '6000.00')
@@ -38,7 +38,7 @@ describe('Processor', function () {
     describe('with pdf image file', function () {
       this.timeout(20000)
       it('should parse', function (done) {
-        scanner(path.join(__dirname, '/../test_files/readablePDFimage.pdf'))
+        scanner(path.join(__dirname, '..', 'test_files', 'readablePDFimage.pdf'))
           .parse(function (error, results) {
             assert.equal(error, null)
             assert.equal(results.amount, '5,280.00')
@@ -50,7 +50,7 @@ describe('Processor', function () {
 
     describe('with empty pdf file', function () {
       it('should return error', function (done) {
-        scanner(path.join(__dirname, '/../test_files/empty.pdf'))
+        scanner(path.join(__dirname, '..', 'test_files', 'empty.pdf'))
           .parse(function (error) {
             assert.equal(error.message, 'No images found in PDF')
             done()
@@ -61,7 +61,7 @@ describe('Processor', function () {
     describe('with image file', function () {
       this.timeout(20000)
       it('should parse', function (done) {
-        scanner(path.join(__dirname, '/../test_files/readable.jpg'))
+        scanner(path.join(__dirname, '..', 'test_files', 'readable.jpg'))
           .parse(function (error, results) {
             assert.equal(error, null)
             assert.equal(results.amount, '5,280.00')
@@ -73,7 +73,7 @@ describe('Processor', function () {
 
     describe('with empty image file', function () {
       it('should parse', function (done) {
-        scanner(path.join(__dirname, '/../test_files/empty.jpg'))
+        scanner(path.join(__dirname, '..', 'test_files', 'empty.jpg'))
           .parse(function (error, results) {
             assert.equal(error, null)
             assert.equal(results.amount, false)
@@ -85,7 +85,7 @@ describe('Processor', function () {
 
     describe('with image file containing alpha channel', function () {
       it('should parse', function (done) {
-        scanner(path.join(__dirname, '/../test_files/alpha.png'))
+        scanner(path.join(__dirname, '..', 'test_files', 'alpha.png'))
           .parse(function (error, results) {
             assert.equal(error, null)
             assert.equal(results.amount, false)
@@ -97,7 +97,7 @@ describe('Processor', function () {
 
     describe('with invalid file', function () {
       it('should return error', function (done) {
-        scanner(path.join(__dirname, '/../test_files/readable.txt'))
+        scanner(path.join(__dirname, '..', 'test_files', 'readable.txt'))
           .parse(function (error) {
             assert.equal(error.message, 'Unsupported format: text/plain')
             done()
@@ -160,7 +160,7 @@ describe('Processor', function () {
            })
         }
 
-        scanner(path.join(__dirname, '/../test_files/readable.jpg'))
+        scanner(path.join(__dirname, '..', 'test_files', 'readable.jpg'))
           .imagePreprocessor(customPreprocessor)
           .parse(function (error, results) {
             assert.equal(error, null)
@@ -173,7 +173,7 @@ describe('Processor', function () {
     describe('with existing image processor', function () {
       this.timeout(30000)
       it('uses existing image processor', function (done) {
-        scanner(path.join(__dirname, '/../test_files/readable.jpg'))
+        scanner(path.join(__dirname, '..', 'test_files', 'readable.jpg'))
           .imagePreprocessor('sharp')
           .parse(function (error, results) {
             assert.equal(error, null)
@@ -209,7 +209,7 @@ describe('Processor', function () {
            })
         }
 
-        scanner(path.join(__dirname, '/../test_files/readable.jpg'))
+        scanner(path.join(__dirname, '..', 'test_files', 'readable.jpg'))
           .imagePreprocessor(customPreprocessor1)
           .imagePreprocessor(customPreprocessor2)
           .parse(function (error, results) {
@@ -236,7 +236,7 @@ describe('Processor', function () {
 
       this.timeout(30000)
       it('should return error', function (done) {
-        scanner(path.join(__dirname, '/../test_files/readablePDFimage.pdf'))
+        scanner(path.join(__dirname, '..', 'test_files', 'readablePDFimage.pdf'))
         .parse(function (err, results) {
           assert.equal(error, err)
           done()
@@ -258,7 +258,7 @@ describe('Processor', function () {
       })
 
       it('should return error', function (done) {
-        scanner(path.join(__dirname, '/../test_files/readable.jpg'))
+        scanner(path.join(__dirname, '..', 'test_files', 'readable.jpg'))
         .parse(function (err, results) {
           assert.equal(error, err)
           done()

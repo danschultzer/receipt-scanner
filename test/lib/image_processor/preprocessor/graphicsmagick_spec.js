@@ -9,7 +9,7 @@ describe('#graphicsmagick()', function (done) {
   this.timeout(30000)
 
   it('should parse with graphicsmagick as preprocessor', function (done) {
-    scanner(path.join(__dirname, '/../../../test_files/readable.jpg'))
+    scanner(path.join(__dirname, '..', '..', '..', 'test_files', 'readable.jpg'))
       .imagePreprocessor('graphicsmagick')
       .parse(function (error, results) {
         assert.equal(error, null)

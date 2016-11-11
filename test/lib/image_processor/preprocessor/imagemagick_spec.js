@@ -9,7 +9,7 @@ describe('#imagemagick()', function (done) {
   this.timeout(30000)
 
   it('should parse with imagemagick-prepare-ocr as preprocessor', function (done) {
-    scanner(path.join(__dirname, '/../../../test_files/readable.jpg'))
+    scanner(path.join(__dirname, '..', '..', '..', 'test_files', 'readable.jpg'))
       .imagePreprocessor('imagemagick')
       .parse(function (error, results) {
         assert.equal(error, null)
