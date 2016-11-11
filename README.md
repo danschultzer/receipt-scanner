@@ -10,13 +10,13 @@ Receipt scanner extracts information from your PDF or image receipts.
 ## Example
 
 ```
-import scanner from 'receipt-scanner';
+import scanner from 'receipt-scanner'
 
-scanner(stream_or_file_path)
-  .parse(function(err, results) {
-    if (err) return console.error(err);
-    else console.log(results);
-  });
+scanner(streamOrFilePath)
+  .parse(function (err, results) {
+    if (err) return console.error(err)
+    else console.log(results)
+  })
 ```
 
 ### CLI
@@ -83,25 +83,25 @@ These dependencies are only necessary if you're going to use `sharp`, `imagemagi
 You can use, and chain, specific image preprocessors by using the `imagePreprocessor` method like so:
 
 ```
-var gm = require('gm');
+var gm = require('gm')
 
-function customPreprocessor(file_or_stream, outfile, cb) {
-  gm(file_or_stream)
+function customPreprocessor (fileOrStream, outfile, cb) {
+  gm(fileOrStream)
    .resize(400, 200)
    .in('-level', '25%,75%')
-   .write(outfile, function(error) {
-     cb(error, outfile);
-   });
+   .write(outfile, function (error) {
+     cb(error, outfile)
+   })
 }
 
-import scanner from 'receipt-scanner';
+import scanner from 'receipt-scanner'
 
-scanner(stream_or_file_path)
+scanner(streamOrFilePath)
   .imagePreprocessor(customPreprocessor)
-  .parse(function(err, results) {
-    if (err) return console.error(err);
-    else console.log(results);
-  });
+  .parse(function (err, results) {
+    if (err) return console.error(err)
+    else console.log(results)
+  })
 ```
 
 The default preprocessor used is [`opencv`](lib/image_processor/preprocessor/opencv.js). It's also possible to add configuration settings by pushing an array to `imagePreprocessor` like so:
@@ -116,25 +116,27 @@ scanner(stream_or_file_path)
 You can add a custom text parser by using the `textParser` method like so:
 
 ```
-function customTextParser(text) {
-  var regexp = new RegExp('Description: (.*)', 'ig'),
-    matches, output = [], results = {};
+function customTextParser (text) {
+  var regexp = new RegExp('Description: (.*)', 'ig')
+  var matches
+  var output = []
+  var results = {}
   while (matches = regexp.exec(text)) {
-    output.push(matches[1]);
+    output.push(matches[1])
   }
-  results.matches = output;
-  results.match = output[0];
-  return results;
+  results.matches = output
+  results.match = output[0]
+  return results
 }
 
-import scanner from 'receipt-scanner';
+import scanner from 'receipt-scanner'
 
-scanner(stream_or_file_path)
+scanner(streamOrFilePath)
   .textParser(customTextParser)
-  .parse(function(err, results) {
-    if (err) return console.error(err);
-    else console.log(results);
-  });
+  .parse(function (err, results) {
+    if (err) return console.error(err)
+    else console.log(results)
+  })
 ```
 
 The value will be added to the response object for the `customTextParser` key.
@@ -144,14 +146,14 @@ The value will be added to the response object for the `customTextParser` key.
 You can customize either parser by setting config like so:
 
 ```
-import scanner from 'receipt-scanner';
+import scanner from 'receipt-scanner'
 
-scanner(stream_or_file_path)
+scanner(streamOrFilePath)
   .textParser(['date', { parser: 'first' }])
-  .parse(function(err, results) {
-    if (err) return console.error(err);
-    else console.log(results);
-  });
+  .parse(function (err, results) {
+    if (err) return console.error(err)
+    else console.log(results)
+  })
 ```
 
 Date parser will by default find the [`earliest`](lib/text_parser/date/earliest.js) date, but as shown in the example you can also find the [`first`](lib/text_parser/date/first.js). The amount parser will find the total first, and if nothing is found, then find the biggest amount.
@@ -167,16 +169,16 @@ Date parser will by default find the [`earliest`](lib/text_parser/date/earliest.
 A ticker callback can be added with the `ticker` method.
 
 ```
-import scanner from 'receipt-scanner';
+import scanner from 'receipt-scanner'
 
-scanner(stream_or_file_path)
-  .ticker(function(percent) {
+scanner(streamOrFilePath)
+  .ticker(function (percent) {
     // Update ticker with current percent amount
   })
-  .parse(function(err, results) {
-    if (err) return console.error(err);
-    else console.log(results);
-  });
+  .parse(function (err, results) {
+    if (err) return console.error(err)
+    else console.log(results)
+  })
 ```
 
 ### Parse text
@@ -184,9 +186,9 @@ scanner(stream_or_file_path)
 If you've already extracted the text, and just want to parse it for the relevant information you can use `parseText`.
 
 ```
-import scanner from 'receipt-scanner';
+import scanner from 'receipt-scanner'
 
-var results = scanner().parseText(text);
+var results = scanner().parseText(text)
 ```
 
 It'll return the same results as when you use `parse(callback)`.
