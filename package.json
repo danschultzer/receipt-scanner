@@ -17,7 +17,8 @@
     "cover": "./node_modules/istanbul/lib/cli.js cover _mocha --recursive \"test/**/*_spec.js\" --reporter spec && standard",
     "scan": "./cli.js -p -s",
     "verbose": "./cli.js -p -s -v",
-    "benchmark": "./benchmark/image_preprocessors.js"
+    "benchmark": "./benchmark/image_preprocessors.js",
+    "generate-benchmark-sample": "./benchmark/generate.js"
   },
   "keywords": [
     "computer vision",
@@ -36,7 +37,7 @@
   "bin": {
     "receipt-scanner": "./cli.js"
   },
-  "files":  [
+  "files": [
     "lib",
     "cli.js",
     "main.js"
@@ -54,13 +55,14 @@
   },
   "optionalDependencies": {
     "gm": "^1.23.0",
-    "sharp" : "^0.16.0"
+    "sharp": "^0.16.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.1.0",
     "nodemon": "^1.10.2",
+    "screenshot-stream": "4.1.0",
     "sinon": "^1.17.5",
     "standard": "^8.5.0"
   }
