@@ -1,5 +1,5 @@
-'use strict';
+'use strict'
 
-var scanner = require('./lib/processor');
+var scanner = require('./lib/processor')
 
-module.exports = scanner;
+module.exports = scanner
