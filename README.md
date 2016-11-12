@@ -118,15 +118,11 @@ You can add a custom text parser by using the `textParser` method like so:
 ```
 function customTextParser (text) {
   var regexp = new RegExp('Description: (.*)', 'ig')
-  var matches
   var output = []
-  var results = {}
-  while (matches = regexp.exec(text)) {
+  while (var matches = regexp.exec(text)) {
     output.push(matches[1])
   }
-  results.matches = output
-  results.match = output[0]
-  return results
+  return { matches: output, match: output[0] }
 }
 
 import scanner from 'receipt-scanner'
