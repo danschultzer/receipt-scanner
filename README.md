@@ -219,7 +219,7 @@ You can use `npm test watch` to keep tests running, and `npm run cover` for cove
 
 Run `npm run benchmark` to get success rate using the [receipt-scanner-testdata](https://github.com/danschultzer/receipt-scanner-testdata) repository.
 
-To generate random data set to test against run `npm run generate-benchmark-sample`.
+To generate random data set to benchmark run `npm run generate-benchmark-sample`.
 
 ## LICENSE
 

@@ -5,42 +5,42 @@ var screenshot = require('screenshot-stream')
 var gm = require('gm').subClass({ imageMagick: true })
 var fs = require('fs')
 var path = require('path')
+var chalk = require('chalk')
+var log = console.log
 
 function generate (options) {
   var number = options.number || 20
-  var index = 0
   var json = { data: [] }
   var imageOptions = randomizeOptions(number)
   var destDir = path.join(__dirname, 'testdata')
 
-  try {
-    fs.unlinkSync(destDir)
-  } catch (e) {}
+  rmDir(destDir)
+  fs.mkdir(destDir, function (error) {
+    if (error) throw error
 
-  try {
-    fs.mkdirSync(destDir)
-  } catch (e) {}
+    for (var i = 0; i < number; i++) {
+      var stream = renderHTMLPage();
+      (function (i) {
+        var fileName = `receipt-${i + 1}.jpg`
+        processStream(stream, path.join(destDir, fileName), imageOptions[i], function (error) {
+          if (error) throw error
 
-  for (var i = 0; i < number; i++) {
-    var stream = renderHTMLPage(`file://${__dirname}/receipt.html`);
-    (function (i, index) {
-      processStream(stream, path.join(destDir, `receipt-${index}.jpg`), imageOptions[i], function (error) {
-        if (error) throw error
-        json.data.push({
-          path: `receipt-${index}.jpg`,
-          results: {
-            amount: '698.00',
-            date: '2016-04-25'
+          json.data.push({
+            path: fileName,
+            results: {
+              amount: '698.00',
+              date: '2016-04-25'
+            }
+          })
+
+          if (json.data.length >= number) {
+            fs.writeFile(path.join(destDir, 'data.json'), JSON.stringify(json, null, 2), 'utf8')
+            log(chalk.green('Success! ') + number + ' sample receipt(s) has been created in ' + chalk.underline(destDir))
           }
         })
-        if (json.data.length >= number) {
-          fs.writeFile(path.join(destDir, 'data.json'), JSON.stringify(json, null, 2), 'utf8')
-          console.log('All saved')
-        }
-      })
-    })(i, index)
-    index++
-  }
+      })(i)
+    }
+  })
 }
 
 function randomizeOptions (number) {
@@ -61,7 +61,7 @@ function randomizeOptions (number) {
 
 function biasedRotation () {
   // It'll mostly be straight
-  return biasedValue(-25, 25, 0)
+  return biasedRandom(-25, 25, 0)
 }
 
 function shouldAdd (bias) {
@@ -70,27 +70,27 @@ function shouldAdd (bias) {
 }
 
 function biasedWashout () {
-  var blackPoint = biasedValue(-25, 25, 2)
-  var whitePoint = biasedValue(75, 100, 90)
-  var gamma = biasedValue(0.8, 2.3, 2.0)
+  var blackPoint = biasedRandom(-25, 25, 2)
+  var whitePoint = biasedRandom(75, 100, 90)
+  var gamma = biasedRandom(0.8, 2.3, 2.0)
 
   return [`${blackPoint}%`, `${whitePoint}%`, gamma]
 }
 
 function biasedImplode () {
-  return biasedValue(-0.2, 0.2, 0)
+  return biasedRandom(-0.2, 0.2, 0)
 }
 
 // From http://stackoverflow.com/a/29325222/939535
-function biasedValue (min, max, bias, influence) {
+function biasedRandom (min, max, bias, influence) {
   influence = influence || 1
   var random = Math.random() * (max - min) + min
   var mix = Math.random() * influence
   return random * (1 - mix) + bias * mix
 }
 
-function renderHTMLPage (url, cb) {
-  return screenshot(url, '772x1222', { crop: true, selector: '.receipt', scale: 2 })
+function renderHTMLPage () {
+  return screenshot(`file://${__dirname}/receipt.html`, '772x1222', { crop: true, selector: '.receipt', scale: 2 })
 }
 
 function processStream (stream, out, options, cb) {
@@ -110,6 +110,23 @@ function processStream (stream, out, options, cb) {
     cb(error)
   })
 }
+
+function rmDir (dirPath) {
+  try {
+    var files = fs.readdirSync(dirPath)
+  } catch (e) { return }
+  if (files.length > 0) {
+    for (var i = 0; i < files.length; i++) {
+      var filePath = path.join(dirPath, files[i])
+      if (fs.statSync(filePath).isFile()) {
+        fs.unlinkSync(filePath)
+      } else {
+        rmDir(filePath)
+      }
+    }
+  }
+  fs.rmdirSync(dirPath)
+};
 
 program
   .usage('[options]')
