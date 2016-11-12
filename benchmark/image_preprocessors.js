@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+var program = require('commander')
 var exec = require('child_process').exec
 var fs = require('fs')
 var chalk = require('chalk')
@@ -141,6 +142,17 @@ function processData () {
 
         var minRate = 0.85
         var resultKeys = Object.keys(results)
+
+        // Remove preprocessors from reporting to GH
+        if (typeof program.onlyGhReport === 'string' && program.onlyGhReport.length > 0) {
+          var preprocessors = program.onlyGhReport.split(',')
+          resultKeys = resultKeys.filter(function (key, name) {
+            return preprocessors.indexOf(key) > -1
+          })
+        }
+
+        if (resultKeys.length < 1) return false
+
         var resultValues = resultKeys.map(function (key) {
           return results[key]
         })
@@ -174,5 +186,10 @@ function processData () {
     })
   })
 }
+
+program
+  .usage('[options]')
+  .option('--only-gh-report [preprocessors]', 'Only report the desired preprocessors to Github', ['graphicsmagick', 'sharp', 'opencv', 'imagemagick'])
+  .parse(process.argv)
 
 extractTestData().then(processData)
