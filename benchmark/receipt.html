@@ -1,0 +1,111 @@
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Monaco" rel="stylesheet">
+</head>
+<body>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100vh;
+  margin: 0;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font: 20px/1.5 Monaco, monospace;
+  background: #e93;
+}
+
+.receipt {
+  width: 23em;
+  box-shadow: 0 0.2em 1em 0.2em rgba(0, 0, 0, 0.2);
+  border: 2px dotted white;
+  border-width: 1px;
+}
+.receipt .paper {
+  padding: 3em 1.5em;
+  background: white;
+}
+.receipt h1 {
+  font-size: 150%;
+  margin: 0;
+}
+.receipt h1,
+.receipt .event {
+  text-align: center;
+  line-height: 1;
+}
+.receipt dl {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  margin: 1.5em 0 0;
+}
+.receipt dt,
+.receipt dd {
+  margin: 0;
+  width: 50%;
+}
+.receipt dd {
+  text-align: right;
+}
+.receipt .total {
+  margin: 0;
+}
+.receipt .total:before {
+  content: '-------------------';
+  display: block;
+  width: 100%;
+  text-align: right;
+}
+.receipt .total dt {
+  text-align: right;
+}
+.receipt .total dd {
+  padding-left: .5em;
+  text-align: left;
+}
+</style>
+<div class='receipt'>
+  <div class='paper'>
+    <h1>ACME Inc.</h1>
+    <div class='event'>Street, City, State, 12345</div>
+    <dl>
+      <dt>Order #:</dt>
+      <dd>7yVSwQAE</dd>
+      <dt>Date:</dt>
+      <dd>4/25/2016</dd>
+      <dt>Credit Card:</dt>
+      <dd>*************1234</dd>
+      <dt></dt>
+      <dd>MasterCard</dd>
+    </dl>
+    <dl class='total'>
+      <dt>Total:</dt>
+      <dd>$698.00</dd>
+      <dt>Tax:</dt>
+      <dd>$99.00</dd>
+    </dl>
+    <dl>
+      <dt>Requesting Receipt:</dt>
+      <dd>John Doe, john.doe@gmail.com</dd>
+    </dl>
+  </div>
+</div>
+</body>
+</html>
