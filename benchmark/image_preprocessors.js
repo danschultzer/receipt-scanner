@@ -4,7 +4,9 @@ var exec = require('child_process').exec
 var fs = require('fs')
 var chalk = require('chalk')
 var scanner = require('../lib/processor')
+var path = require('path')
 var benchmarkDir = __dirname
+var testdataDir = path.join(benchmarkDir, 'testdata')
 var log = console.log
 
 function benchmark (preprocessors, compareFiles) {
@@ -17,7 +19,7 @@ function benchmark (preprocessors, compareFiles) {
     compareFiles.forEach(function (file, index) {
       p = p.then(function (list) {
         return new Promise(function (resolve, reject) {
-          scanner(benchmarkDir + '/receipt-scanner-testdata-master/' + file.path)
+          scanner(path.join(testdataDir, file.path))
             .imagePreprocessor(preprocessor)
             .parse(function (error, results) {
               if (error) {
@@ -55,36 +57,45 @@ function benchmark (preprocessors, compareFiles) {
 }
 
 function extractTestData () {
-  var saveAs = benchmarkDir + '/receipt-scanner-testdata-master.zip'
+  var saveAs = path.join(benchmarkDir, 'testdata.zip')
   return new Promise(function (resolve, reject) {
     log('Working in ' + chalk.underline(benchmarkDir))
-    fs.access(saveAs, fs.F_OK, function (error) {
+    fs.access(testdataDir, fs.constants.F_OK, function (error) {
       if (!error) {
-        return resolve(saveAs)
+        log('Testdata directory already exists')
+        return resolve()
       }
 
-      log('Downloading ' + chalk.underline('receipt-scanner-testdata-master.zip'), ' ...')
-      var command = 'curl -o ' + saveAs + ' -z ' + saveAs + ' -L https://github.com/danschultzer/receipt-scanner-testdata/archive/master.zip'
-      log('Running ' + chalk.bold(command))
-      exec(command,
-        {
-          maxBuffer: 1024 * 1024 * 10
-        },
-        function (error, stdout, stderr) {
-          console.log(stdout)
-          console.log(stderr)
-          if (error) {
-            reject()
-            throw error
-          }
-          resolve(saveAs)
+      fs.access(saveAs, fs.F_OK, function (error) {
+        if (!error) {
+          return resolve(saveAs)
         }
-      )
+
+        log('Downloading ' + chalk.underline('testdata.zip'), ' ...')
+        var command = `curl -o ${saveAs} -z ${saveAs} -L https://github.com/danschultzer/receipt-scanner-testdata/archive/master.zip`
+        log('Running ' + chalk.bold(command))
+        exec(command,
+          {
+            maxBuffer: 1024 * 1024 * 10
+          },
+          function (error, stdout, stderr) {
+            console.log(stdout)
+            console.log(stderr)
+            if (error) {
+              reject()
+              throw error
+            }
+            resolve(saveAs)
+          }
+        )
+      })
     })
-  }).then(function (saveAs) {
+  }).then(function (zipFile) {
+    if (!zipFile) return new Promise(function (resolve) { return resolve() })
+
     return new Promise(function (resolve, reject) {
-      log('Unzipping ' + chalk.underline(saveAs))
-      var command = 'unzip -n ' + saveAs + ' -d ' + benchmarkDir
+      log('Unzipping ' + chalk.underline(zipFile))
+      var command = `unzip -n ${zipFile} -d ${benchmarkDir} && mv ${benchmarkDir}/receipt-scanner-testdata-master ${testdataDir}`
       log('Running ', chalk.bold(command))
 
       exec(command, function (error, stdout, stderr) {
@@ -110,7 +121,7 @@ function processData () {
       'imagemagick'
     ]
 
-    fs.readFile(benchmarkDir + '/receipt-scanner-testdata-master/data.json', 'utf8', function (error, data) {
+    fs.readFile(path.join(testdataDir, 'data.json'), 'utf8', function (error, data) {
       if (error) {
         throw error
       }
