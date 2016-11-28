@@ -1,0 +1,11 @@
+{
+  "reporter": [
+    "lcovonly",
+    "text"
+  ],
+  "exclude": [
+    "**/node_modules/**",
+    "test",
+    "benchmark/image_preprocessors.js"
+  ]
+}

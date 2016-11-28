@@ -12,9 +12,9 @@
     "url": "http://github.com/danschultzer/receipt-scanner.git"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec --recursive && standard",
-    "test watch": "./node_modules/.bin/mocha --reporter spec --recursive --watch && standard",
-    "cover": "./node_modules/istanbul/lib/cli.js cover _mocha --recursive \"test/**/*_spec.js\" --reporter spec && standard",
+    "test": "mocha --recursive",
+    "test watch": "mocha --recursive --watch",
+    "cover": "nyc mocha --recursive && standard",
     "scan": "./cli.js -p -s",
     "verbose": "./cli.js -p -s -v",
     "benchmark": "./benchmark/image_preprocessors.js",
@@ -59,9 +59,9 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "istanbul": "^0.4.5",
     "mocha": "^3.1.0",
     "nodemon": "^1.10.2",
+    "nyc": "^10.0.0",
     "screenshot-stream": "4.1.0",
     "sinon": "^1.17.5",
     "standard": "^8.5.0"

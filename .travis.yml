@@ -16,8 +16,9 @@ addons:
       - libopencv-dev
 
 script:
-  - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- "test/**/*_spec.js" --reporter spec --recursive
+  - nyc mocha --recursive
+  - mv coverage/lcov.info coverage/lcov-spec.info
   - mv test/test_files/benchmark benchmark/testdata
-  - istanbul cover ./benchmark/image_preprocessors.js --report lcovonly --config ./benchmark/.istanbul.yml --  --only-gh-report opencv
+  - nyc ./benchmark/image_preprocessors.js --only-gh-report opencv
   - bash <(curl -s https://codecov.io/bash) -s coverage -f *.info
   - "if [ -f benchmark/github-commit-status.json ]; then curl -H \"Authorization: token $GH_TOKEN\" -H \"Content-Type: application/json\" -X POST -d @benchmark/github-commit-status.json https://api.github.com/repos/danschultzer/receipt-scanner/statuses/$(git rev-parse HEAD); fi"
