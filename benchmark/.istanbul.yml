@@ -1,6 +1,0 @@
-instrumentation:
-  excludes: ['benchmark/image_preprocessors.js']
-reporting:
-  report-config:
-    lcovonly:
-      file: lcov-benchmark.info
