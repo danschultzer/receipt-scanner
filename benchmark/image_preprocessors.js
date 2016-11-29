@@ -115,12 +115,16 @@ function extractTestData () {
 function processData () {
   return new Promise(function (resolve, reject) {
     log('Processing data')
-    var imageProcessors = [
+
+    var imageProcessors = program.preprocessors || [
       'graphicsmagick',
       'sharp',
       'opencv',
       'imagemagick'
     ]
+    if (typeof imageProcessors === 'string') {
+      imageProcessors = imageProcessors.split(',')
+    }
 
     fs.readFile(path.join(testdataDir, 'data.json'), 'utf8', function (error, data) {
       if (error) {
@@ -142,6 +146,8 @@ function processData () {
 
         var minRate = 0.85
         var resultKeys = Object.keys(results)
+
+        if (program.verbose) console.log(JSON.stringify(results, null, 2))
 
         // Remove preprocessors from reporting to GH
         if (typeof program.onlyGhReport === 'string' && program.onlyGhReport.length > 0) {
@@ -189,7 +195,9 @@ function processData () {
 
 program
   .usage('[options]')
+  .option('--preprocessors [preprocessors]', 'Only run these preprocessors', ['graphicsmagick', 'sharp', 'opencv', 'imagemagick'])
   .option('--only-gh-report [preprocessors]', 'Only report the desired preprocessors to Github', ['graphicsmagick', 'sharp', 'opencv', 'imagemagick'])
+  .option('--verbose')
   .parse(process.argv)
 
 extractTestData().then(processData)
