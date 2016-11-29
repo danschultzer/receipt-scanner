@@ -51,6 +51,7 @@
     "opencv": "git://github.com/peterbraden/node-opencv.git",
     "pdf-text-extract": "^1.5.0",
     "progress": "^2.0.0",
+    "random-seed": "0.3.0",
     "tmp": "^0.0.33"
   },
   "optionalDependencies": {

@@ -6,11 +6,15 @@ var gm = require('gm').subClass({ imageMagick: true })
 var fs = require('fs')
 var path = require('path')
 var chalk = require('chalk')
+var rand = require('random-seed').create();
+var randSeed = null
 var log = console.log
 var destDir = path.join(__dirname, 'testdata')
 
 function generate (options) {
   var number = options.number || 20
+  randSeed = options.seed || parseInt(Math.random() * 2147483647)
+  rand.seed(randSeed)
   var json = { data: [] }
   rmDir(destDir)
   fs.mkdir(destDir, function (error) {
@@ -39,6 +43,7 @@ function generate (options) {
               if (json.data.length >= number) {
                 fs.writeFileSync(path.join(destDir, 'data.json'), JSON.stringify(json, null, 2), 'utf8')
                 log(chalk.green('Success! ') + number + ' sample receipt(s) has been created in ' + chalk.underline(destDir))
+                log('Generated with seed number: ' + chalk.bold(randSeed))
               }
             }
           })
@@ -113,7 +118,7 @@ function biasedRotation () {
 
 function shouldAdd (bias) {
   bias = bias || 0.5
-  return Math.random() < bias
+  return rand.random() < bias
 }
 
 function biasedWashout () {
@@ -131,7 +136,7 @@ function biasedImplode () {
 function randomGradientLightning (number, cb) {
   var min = 0.4
   var max = 0.8
-  var random = Math.random() * (max - min) + min
+  var random = rand.random() * (max - min) + min
   var value = 255 * random
   var filename = path.join(destDir, `gradient-${number}.jpg`)
 
@@ -143,8 +148,8 @@ function randomGradientLightning (number, cb) {
 // From http://stackoverflow.com/a/29325222/939535
 function biasedRandom (min, max, bias, influence) {
   influence = influence || 1
-  var random = Math.random() * (max - min) + min
-  var mix = Math.random() * influence
+  var random = rand.random() * (max - min) + min
+  var mix = rand.random() * influence
   return random * (1 - mix) + bias * mix
 }
 
@@ -197,6 +202,7 @@ function rmDir (dirPath) {
 program
   .usage('[options]')
   .option('-a, --amount <n>', 'Number of images')
+  .option('-s, --seed <n>', 'Seed for psuedo random generation')
   .parse(process.argv)
 
-generate({ number: program.amount })
+generate({ number: program.amount, seed: program.seed })
