@@ -7,60 +7,103 @@ var fs = require('fs')
 var path = require('path')
 var chalk = require('chalk')
 var log = console.log
+var destDir = path.join(__dirname, 'testdata')
 
 function generate (options) {
   var number = options.number || 20
   var json = { data: [] }
-  var imageOptions = randomizeOptions(number)
-  var destDir = path.join(__dirname, 'testdata')
-
   rmDir(destDir)
   fs.mkdir(destDir, function (error) {
     if (error) throw error
+    randomizeOptions(number, function (err, imageOptions) {
+      if (err) throw err
 
-    for (var i = 0; i < number + 1; i++) {
-      var stream = renderHTMLPage();
-      (function (i) {
-        var original = i >= number
-        var fileName = original ? 'original.jpg' : `receipt-${i + 1}.jpg`
-        var options = original ? {} : imageOptions[i]
-        processStream(stream, path.join(destDir, fileName), options, function (error) {
-          if (error) throw error
+      for (var i = 0; i < number + 1; i++) {
+        var stream = renderHTMLPage();
+        (function (i) {
+          var original = i >= number
+          var fileName = original ? 'original.jpg' : `receipt-${i + 1}.jpg`
+          var options = original ? {} : imageOptions[i]
+          processStream(stream, path.join(destDir, fileName), options, function (error) {
+            if (error) throw error
 
-          if (!original) {
-            json.data.push({
-              path: fileName,
-              results: {
-                amount: '698.00',
-                date: '2016-04-25'
+            if (!original) {
+              json.data.push({
+                path: fileName,
+                results: {
+                  amount: '698.00',
+                  date: '2016-04-25'
+                }
+              })
+
+              if (json.data.length >= number) {
+                fs.writeFileSync(path.join(destDir, 'data.json'), JSON.stringify(json, null, 2), 'utf8')
+                log(chalk.green('Success! ') + number + ' sample receipt(s) has been created in ' + chalk.underline(destDir))
               }
-            })
-
-            if (json.data.length >= number) {
-              fs.writeFileSync(path.join(destDir, 'data.json'), JSON.stringify(json, null, 2), 'utf8')
-              log(chalk.green('Success! ') + number + ' sample receipt(s) has been created in ' + chalk.underline(destDir))
             }
-          }
-        })
-      })(i)
-    }
+          })
+        })(i)
+      }
+    })
   })
 }
 
-function randomizeOptions (number) {
-  var options = []
+function randomizeOptions (number, cb) {
+  var promises = []
+
   for (var i = 0; i < number; i++) {
-    options.push({
-      // All receipts has a bit of rotation and washout/gamma
-      rotate: biasedRotation(),
-      paperWashout: biasedWashout(),
-      photoGamma: biasedWashout(),
-      // 20% has some degree of paper bend
-      implode: shouldAdd(0.2) ? biasedImplode() : null
-    })
+    promises.push(new Promise(function (resolve, reject) {
+      randomizeOption(i, function (err, result) {
+        if (err) return reject(err)
+
+        resolve(result)
+      })
+    }))
   }
 
-  return options
+  Promise.all(promises).then(function (results) {
+    cb(null, results)
+  }, function (err) {
+    cb(err)
+  })
+}
+
+function randomizeOption (i, cb) {
+  var promises = []
+
+  promises.push(Promise.resolve({
+    // All receipts has a bit of rotation and washout/gamma
+    rotate: biasedRotation(),
+    paperWashout: biasedWashout(),
+    photoGamma: biasedWashout(),
+    // 20% has some degree of paper bend
+    implode: shouldAdd(0.2) ? biasedImplode() : null
+  }))
+
+  // 20% has some lightning gradient
+  if (shouldAdd(0.2)) {
+    promises.push(new Promise(function (resolve, reject) {
+      randomGradientLightning(i + 1, function (err, filename) {
+        if (err) return reject(err)
+
+        resolve({
+          gradient: filename
+        })
+      })
+    }))
+  }
+
+  Promise.all(promises).then(function (array) {
+    // Combine all the options together
+    var options = array[0]
+    for (var i = 1; i < array.length; i++) {
+      Object.assign(options, array[i])
+    }
+
+    cb(null, options)
+  }, function (err) {
+    cb(err)
+  })
 }
 
 function biasedRotation () {
@@ -83,6 +126,18 @@ function biasedWashout () {
 
 function biasedImplode () {
   return biasedRandom(-0.2, 0.2, 0)
+}
+
+function randomGradientLightning (number, cb) {
+  var min = 0.4
+  var max = 0.8
+  var random = Math.random() * (max - min) + min
+  var value = 255 * random
+  var filename = path.join(destDir, `gradient-${number}.jpg`)
+
+  gm(1500, 1500).in(`gradient:rgb(${value}, ${value}, ${value})-rgb(0, 0, 0)`).write(filename, function (err) {
+    cb(err, filename)
+  })
 }
 
 // From http://stackoverflow.com/a/29325222/939535
@@ -109,6 +164,13 @@ function processStream (stream, out, options, cb) {
 
   // Rotated images will touch the border, so adding another 100px margin to clear
   imagemagick.borderColor('green').border(100, 100)
+
+  // Add gradient lightning
+  if (options.gradient) {
+    var newStream = imagemagick.stream('jpg')
+    imagemagick = gm(newStream)
+    imagemagick.compose('hardlight').composite(options.gradient)
+  }
 
   imagemagick.write(out, function (error) {
     cb(error)
