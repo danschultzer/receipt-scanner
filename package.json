@@ -51,7 +51,7 @@
     "opencv": "^6.0.0",
     "pdf-text-extract": "^1.4.1",
     "progress": "^1.1.8",
-    "tmp": "^0.0.30"
+    "tmp": "^0.0.31"
   },
   "optionalDependencies": {
     "gm": "^1.23.0",
@@ -63,7 +63,7 @@
     "nodemon": "^1.10.2",
     "nyc": "^10.0.0",
     "screenshot-stream": "4.1.0",
-    "sinon": "^1.17.5",
-    "standard": "^8.5.0"
+    "sinon": "^1.17.6",
+    "standard": "^8.6.0"
   }
 }
