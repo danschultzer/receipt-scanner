@@ -18,24 +18,28 @@ function generate (options) {
   fs.mkdir(destDir, function (error) {
     if (error) throw error
 
-    for (var i = 0; i < number; i++) {
+    for (var i = 0; i < number + 1; i++) {
       var stream = renderHTMLPage();
       (function (i) {
-        var fileName = `receipt-${i + 1}.jpg`
-        processStream(stream, path.join(destDir, fileName), imageOptions[i], function (error) {
+        var original = i >= number
+        var fileName = original ? 'original.jpg' : `receipt-${i + 1}.jpg`
+        var options = original ? {} : imageOptions[i]
+        processStream(stream, path.join(destDir, fileName), options, function (error) {
           if (error) throw error
 
-          json.data.push({
-            path: fileName,
-            results: {
-              amount: '698.00',
-              date: '2016-04-25'
-            }
-          })
+          if (!original) {
+            json.data.push({
+              path: fileName,
+              results: {
+                amount: '698.00',
+                date: '2016-04-25'
+              }
+            })
 
-          if (json.data.length >= number) {
-            fs.writeFile(path.join(destDir, 'data.json'), JSON.stringify(json, null, 2), 'utf8')
-            log(chalk.green('Success! ') + number + ' sample receipt(s) has been created in ' + chalk.underline(destDir))
+            if (json.data.length >= number) {
+              fs.writeFileSync(path.join(destDir, 'data.json'), JSON.stringify(json, null, 2), 'utf8')
+              log(chalk.green('Success! ') + number + ' sample receipt(s) has been created in ' + chalk.underline(destDir))
+            }
           }
         })
       })(i)
