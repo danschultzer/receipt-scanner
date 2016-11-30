@@ -106,6 +106,20 @@ function randomizeOption (i, cb) {
     }))
   }
 
+  // 20% has some crumpled effect
+  if (shouldAdd(0.2)) {
+    promises.push(new Promise(function (resolve, reject) {
+      randomWrinkleDistortion(i + 1, function (err, filename) {
+        if (err) return reject(err)
+
+        resolve({
+          wrinkles: filename
+        })
+      })
+    })
+    )
+  }
+
   Promise.all(promises).then(function (array) {
     // Combine all the options together
     var options = array[0]
@@ -149,15 +163,28 @@ function biasedWave () {
 }
 
 function randomGradientLightning (number, cb) {
-  var min = 0.4
-  var max = 0.8
-  var random = rand.random() * (max - min) + min
-  var value = 255 * random
-  var filename = path.join(destDir, `gradient-${number}.jpg`)
+  var randomHigh = rand.random() * (0.9 - 0.4) + 0.4
+  var randomLow = rand.random() * 0.4
+  var high = 255 * randomHigh
+  var low = 255 * randomLow
+  var filename = path.join(destDir, `gradient-lightning-map-${number}.jpg`)
 
-  gm(1500, 1500).in(`gradient:rgb(${value}, ${value}, ${value})-rgb(0, 0, 0)`).write(filename, function (err) {
-    cb(err, filename)
-  })
+  gm(1500, 1500)
+    .in(`gradient:rgb(${high}, ${high}, ${high})-rgb(${low}, ${low}, ${low})`)
+    .write(filename, function (err) {
+      cb(err, filename)
+    })
+}
+
+function randomWrinkleDistortion (number, cb) {
+  var filename = path.join(destDir, `wrinkles-map-${number}.jpg`)
+  gm(1500, 1500)
+    .in('-seed', rand.intBetween(0, 2147483647))
+    .in('plasma:white-white')
+    .colorspace('gray')
+    .write(filename, function (err) {
+      cb(err, filename)
+    })
 }
 
 // From http://stackoverflow.com/a/29325222/939535
@@ -173,12 +200,29 @@ function renderHTMLPage () {
 }
 
 function processStream (stream, out, options, cb) {
+  var newStream
   var imagemagick = gm(stream)
   // Setting up green as the transparent color
   imagemagick.transparent('green').background('green')
 
   if (options.paperWashout) imagemagick.level(options.paperWashout.join(',')) // Washout the paper
   if (options.photoGamma) imagemagick.level(options.photoGamma.join(',')) // Washout the photo
+
+  // Add crumpled/wrinkled paper effect
+  if (options.wrinkles) {
+    newStream = imagemagick.stream('jpg')
+    imagemagick = gm(newStream)
+    newStream = imagemagick
+      .compose('displace')
+      .displace(20, 20)
+      .composite(options.wrinkles).stream('jpg')
+    imagemagick = gm(newStream)
+    newStream = imagemagick
+      .compose('Linear_Burn')
+      .composite(options.wrinkles).stream('jpg')
+    imagemagick = gm(newStream)
+  }
+
   if (options.implode) imagemagick.implode(options.implode)
   if (options.wave) imagemagick.wave(options.wave[0], options.wave[1])
   if (options.rotate) imagemagick.rotate('green', options.rotate)
@@ -188,7 +232,7 @@ function processStream (stream, out, options, cb) {
 
   // Add gradient lightning
   if (options.gradient) {
-    var newStream = imagemagick.stream('jpg')
+    newStream = imagemagick.stream('jpg')
     imagemagick = gm(newStream)
     imagemagick.compose('hardlight').composite(options.gradient)
   }
@@ -219,7 +263,7 @@ program
   .usage('[options]')
   .option('-a, --amount <n>', 'Number of images')
   .option('-s, --seed <n>', 'Seed for psuedo random generation')
-  .option('-d, --disable [modifiers]', `Disable modifiers (e.g. ${['rotate', 'paperWashout', 'photoGamma', 'implode', 'wave', 'gradient'].join(', ')})`)
+  .option('-d, --disable [modifiers]', `Disable modifiers (e.g. ${['rotate', 'paperWashout', 'photoGamma', 'implode', 'wave', 'gradient', 'wrinkles'].join(', ')})`)
   .parse(process.argv)
 
 generate({ number: program.amount, seed: program.seed, disabledModifiers: (program.disable || '').split(',') })
