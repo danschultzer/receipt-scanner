@@ -19,7 +19,7 @@ function generate (options) {
   rmDir(destDir)
   fs.mkdir(destDir, function (error) {
     if (error) throw error
-    randomizeOptions(number, function (err, imageOptions) {
+    randomizeOptions(number, function (err, imageOptionsArray) {
       if (err) throw err
 
       for (var i = 0; i < number + 1; i++) {
@@ -27,8 +27,14 @@ function generate (options) {
         (function (i) {
           var original = i >= number
           var fileName = original ? 'original.jpg' : `receipt-${i + 1}.jpg`
-          var options = original ? {} : imageOptions[i]
-          processStream(stream, path.join(destDir, fileName), options, function (error) {
+          var imageOptions = original ? {} : imageOptionsArray[i]
+
+          // Remove all disabled modifiers
+          for (var j = 0; j < (options.disabledModifiers || []).length; j++) {
+            imageOptions[options.disabledModifiers[j]] = null
+          }
+
+          processStream(stream, path.join(destDir, fileName), imageOptions, function (error) {
             if (error) throw error
 
             if (!original) {
@@ -213,6 +219,7 @@ program
   .usage('[options]')
   .option('-a, --amount <n>', 'Number of images')
   .option('-s, --seed <n>', 'Seed for psuedo random generation')
+  .option('-d, --disable [modifiers]', `Disable modifiers (e.g. ${['rotate', 'paperWashout', 'photoGamma', 'implode', 'wave', 'gradient'].join(', ')})`)
   .parse(process.argv)
 
-generate({ number: program.amount, seed: program.seed })
+generate({ number: program.amount, seed: program.seed, disabledModifiers: (program.disable || '').split(',') })
