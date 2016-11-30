@@ -6,7 +6,7 @@ var gm = require('gm').subClass({ imageMagick: true })
 var fs = require('fs')
 var path = require('path')
 var chalk = require('chalk')
-var rand = require('random-seed').create();
+var rand = require('random-seed').create()
 var randSeed = null
 var log = console.log
 var destDir = path.join(__dirname, 'testdata')
@@ -81,8 +81,10 @@ function randomizeOption (i, cb) {
     rotate: biasedRotation(),
     paperWashout: biasedWashout(),
     photoGamma: biasedWashout(),
-    // 20% has some degree of paper bend
-    implode: shouldAdd(0.2) ? biasedImplode() : null
+    // 20% has some degree of paper imposion bend
+    implode: shouldAdd(0.2) ? biasedImplode() : null,
+    // 30% has some degree if paper wave bend
+    wave: shouldAdd(0.3) ? biasedWave() : null
   }))
 
   // 20% has some lightning gradient
@@ -133,6 +135,13 @@ function biasedImplode () {
   return biasedRandom(-0.2, 0.2, 0)
 }
 
+function biasedWave () {
+  var minWidth = 772 * 2
+  var maxWidth = 772 * 2
+  var avgWidth = 772 * 2.5
+  return [biasedRandom(10, 50, 10), biasedRandom(minWidth, maxWidth, avgWidth)]
+}
+
 function randomGradientLightning (number, cb) {
   var min = 0.4
   var max = 0.8
@@ -165,6 +174,7 @@ function processStream (stream, out, options, cb) {
   if (options.paperWashout) imagemagick.level(options.paperWashout.join(',')) // Washout the paper
   if (options.photoGamma) imagemagick.level(options.photoGamma.join(',')) // Washout the photo
   if (options.implode) imagemagick.implode(options.implode)
+  if (options.wave) imagemagick.wave(options.wave[0], options.wave[1])
   if (options.rotate) imagemagick.rotate('green', options.rotate)
 
   // Rotated images will touch the border, so adding another 100px margin to clear
