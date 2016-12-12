@@ -68,9 +68,14 @@ describe('DateParser', function () {
       })
     })
 
-    it('should handle (month name)/dd/yyyy', function () {
+    it('should handle EN (month name)/dd/yyyy', function () {
       var text = 'Mar 30 2016'
       assert.equal(extractValue(dateParser.allDates(text)), '2016-03-30')
+    })
+
+    it('should handle ES dd/(month name)/yyyy', function () {
+      var text = '15 Dic 2016'
+      assert.equal(extractValue(dateParser.allDates(text)), '2016-12-15')
     })
 
     it('should handle (d)d/(m)m/yyyy', function () {
