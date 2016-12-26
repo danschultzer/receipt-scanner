@@ -38,7 +38,7 @@ receipt-scanner path/to/image.png
 
 ## Getting started
 
-`$ brew install opencv3 poppler tesseract --all-languages`
+`$ brew install opencv3 poppler tesseract --with-all-languages`
 
 `$ brew link --force opencv3`
 
