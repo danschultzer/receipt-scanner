@@ -38,11 +38,9 @@ receipt-scanner path/to/image.png
 
 ## Getting started
 
-`$ brew install poppler tesseract --all-languages`
+`$ brew install opencv3 poppler tesseract --with-all-languages`
 
-`$ brew install webp opencv3; brew link --force opencv3`
-
-`$ ln -s /usr/local/Cellar/opencv3/3.1.0_4/share/OpenCV/3rdparty/lib/libippicv.a /usr/local/lib/` (to fix opencv 3 installation issues on 10.11)
+`$ brew link --force opencv3`
 
 `$ npm install receipt-scanner -g`
 
@@ -68,11 +66,10 @@ Options:
 
 ## Optional dependencies
 
-These dependencies are only necessary if you're going to use `sharp`, `imagemagick` or `graphicsmagick` image preprocessor.
+These dependencies are only necessary if you're going to use `imagemagick` or `graphicsmagick` image preprocessor.
 
 | Preprocessor   | Install command                        |
 | -------------- | -------------------------------------- |
-| Sharp          | `$ brew install vips`                  |
 | Graphicsmagick | `$ brew install graphicsmagick`        |
 | Imagemagick    | `$ brew install imagemagick`           |
 
