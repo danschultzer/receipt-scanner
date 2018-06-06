@@ -225,7 +225,7 @@ describe('Processor', function () {
       var error = new Error('Test')
 
       beforeEach(function () {
-        sinon.stub(preprocessor.prototype, 'process', function (fileOrStream, outfile, callback) {
+        sinon.stub(preprocessor.prototype, 'process').callsFake(function (fileOrStream, outfile, callback) {
           callback(error)
         })
       })
@@ -248,7 +248,7 @@ describe('Processor', function () {
       var error = new Error('Test')
 
       beforeEach(function () {
-        sinon.stub(tesseract, 'process', function (file, callback) {
+        sinon.stub(tesseract, 'process').callsFake(function (file, callback) {
           callback(error)
         })
       })
