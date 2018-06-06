@@ -153,11 +153,11 @@ describe('Processor', function () {
         function customPreprocessor (fileOrStream, outfile, cb) {
           gmCalled = true
           gm(fileOrStream)
-           .resize(400, 200)
-           .in('-level', '25%,75%')
-           .write(outfile, function (error) {
-             cb(error, outfile)
-           })
+            .resize(400, 200)
+            .in('-level', '25%,75%')
+            .write(outfile, function (error) {
+              cb(error, outfile)
+            })
         }
 
         scanner(path.join(__dirname, '..', 'test_files', 'readable.jpg'))
@@ -194,19 +194,19 @@ describe('Processor', function () {
         function customPreprocessor1 (fileOrStream, outfile, cb) {
           chain1Called = true
           gm(fileOrStream)
-           .resize(400, 200)
-           .write(outfile, function (error) {
-             cb(error, outfile)
-           })
+            .resize(400, 200)
+            .write(outfile, function (error) {
+              cb(error, outfile)
+            })
         }
 
         function customPreprocessor2 (fileOrStream, outfile, cb) {
           chain2Called = true
           gm(fileOrStream)
-           .in('-level', '25%,75%')
-           .write(outfile, function (error) {
-             cb(error, outfile)
-           })
+            .in('-level', '25%,75%')
+            .write(outfile, function (error) {
+              cb(error, outfile)
+            })
         }
 
         scanner(path.join(__dirname, '..', 'test_files', 'readable.jpg'))
@@ -237,10 +237,10 @@ describe('Processor', function () {
       this.timeout(30000)
       it('should return error', function (done) {
         scanner(path.join(__dirname, '..', 'test_files', 'readablePDFimage.pdf'))
-        .parse(function (err, results) {
-          assert.equal(error, err)
-          done()
-        })
+          .parse(function (err, results) {
+            assert.equal(error, err)
+            done()
+          })
       })
     })
 
@@ -259,10 +259,10 @@ describe('Processor', function () {
 
       it('should return error', function (done) {
         scanner(path.join(__dirname, '..', 'test_files', 'readable.jpg'))
-        .parse(function (err, results) {
-          assert.equal(error, err)
-          done()
-        })
+          .parse(function (err, results) {
+            assert.equal(error, err)
+            done()
+          })
       })
     })
   })
