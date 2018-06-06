@@ -49,7 +49,7 @@
     "mime": "^2.3.1",
     "node-tesseract": "git://github.com/desmondmorris/node-tesseract.git",
     "opencv": "git://github.com/peterbraden/node-opencv.git",
-    "pdf-text-extract": "^1.4.1",
+    "pdf-text-extract": "^1.5.0",
     "progress": "^2.0.0",
     "tmp": "^0.0.33"
   },
