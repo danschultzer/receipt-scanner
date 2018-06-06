@@ -51,7 +51,7 @@ function randomizeOptions (number) {
       rotate: biasedRotation(),
       paperWashout: biasedWashout(),
       photoGamma: biasedWashout(),
-       // 20% has some degree of paper bend
+      // 20% has some degree of paper bend
       implode: shouldAdd(0.2) ? biasedImplode() : null
     })
   }

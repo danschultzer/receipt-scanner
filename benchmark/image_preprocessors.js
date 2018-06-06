@@ -24,7 +24,7 @@ function benchmark (preprocessors, compareFiles) {
             .imagePreprocessor(preprocessor)
             .parse(function (error, results) {
               if (error) {
-                reject()
+                reject(error)
                 throw error
               }
               list.push({
@@ -83,7 +83,7 @@ function extractTestData () {
             console.log(stdout)
             console.log(stderr)
             if (error) {
-              reject()
+              reject(error)
               throw error
             }
             resolve(saveAs)
@@ -103,7 +103,7 @@ function extractTestData () {
         console.log(stdout)
         console.log(stderr)
         if (error) {
-          reject()
+          reject(error)
           throw error
         }
         resolve()
