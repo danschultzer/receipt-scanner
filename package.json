@@ -63,7 +63,7 @@
     "nodemon": "^1.10.2",
     "nyc": "^10.0.0",
     "screenshot-stream": "4.1.0",
-    "sinon": "^1.17.6",
+    "sinon": "^5.1.0",
     "standard": "^11.0.1"
   }
 }
