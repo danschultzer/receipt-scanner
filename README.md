@@ -42,7 +42,7 @@ receipt-scanner path/to/image.png
 
 `$ brew link --force opencv3`
 
-`$ npm install receipt-scanner -g`
+`$ npm install git+https://git@github.com/danschultzer/receipt-scanner.git -g`
 
 Now run:
 
